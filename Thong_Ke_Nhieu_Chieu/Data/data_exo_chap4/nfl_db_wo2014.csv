@@ -1,0 +1,88 @@
+Player,College,Position,Height,ArmLen,Weight,HandLen
+"Allen, Ricardo",Purdue,DB,71,30,187,9.25
+"Belue, Deion",Alabama,DB,71,31.5,182,8.125
+"Benwikere, Bene",San Jose St.,DB,71,30,195,9.125
+"Breeland, Bashaud",Clemson,DB,71,31.75,197,9
+"Carrie, Travis",Ohio,DB,72,31.875,206,9.75
+"Cockrell, Ross",Duke,DB,72,29.875,191,9
+"Colvin, Aaron",Oklahoma,DB,71,31,177,9.25
+"Davis, Chris",Auburn,DB,70,31,202,9.25
+"Dennard, Darqueze",Michigan St.,DB,71,30.25,199,9
+"Desir, Pierre",Lindenwood,DB,73,33,198,9.625
+"Dixon, Brandon",Northwest Missouri St.,DB,71,32.5,203,9
+"Exum, Antone",Virginia Tech,DB,72,31.625,213,9.625
+"Fuller, Kyle",Virginia Tech,DB,72,32.875,190,9.375
+"Gaines, E.J.",Missouri,DB,70,30.375,190,9.375
+"Gaines, Phillip",Rice,DB,72,31.875,193,9.625
+"Gilbert, Justin",Oklahoma St.,DB,72,33.125,202,8.625
+"Goodson, Demetri",Baylor,DB,71,31.75,194,9.25
+"Hal, Andre",Vanderbilt,DB,70,30.5,188,8.625
+"Hampton, Victor",South Carolina,DB,69,31.25,197,9.25
+"Jackson, Bennett",Notre Dame,DB,72,31.375,195,9.25
+"James, Kendall",Maine,DB,70,29.5,180,8
+"Jean-Baptiste, Stanley",Nebraska,DB,75,32.375,218,8.625
+"Johnson, Dontae",N.C. State,DB,74,31.5,200,8.625
+"Joyner, Lamarcus",Florida St.,DB,68,31.5,184,9.5
+"Lawson, Nevin",Utah St.,DB,69,31.5,190,9
+"McDougle, Dexter",Maryland,DB,70,30.625,196,9.625
+"McGill, Keith",Utah,DB,75,33.25,211,10.25
+"Mitchell, Terrance",Oregon,DB,71,30.125,192,8.5
+"Price, Jabari",North Carolina,DB,70,31.625,200,9.125
+"Purifoy, Loucheiz",Florida,DB,71,32.75,190,8.5
+"Reaser, Keith",Florida Atlantic,DB,70,30.75,189,9.5
+"Reynolds, Rashaad",Oregon St.,DB,70,31.625,189,9.75
+"Roberson, Marcus",Florida,DB,72,31,191,9.25
+"Roby, Bradley",Ohio St.,DB,71,31.5,194,10.25
+"Thomas, Jemea",Georgia Tech,DB,69,30.625,192,10
+"Verrett, Jason",TCU,DB,69,30.625,189,9.25
+"Washington, Todd",Southeastern Louisiana,DB,71,31.125,196,8.75
+"Watkins, Jaylen",Florida,DB,71,30.625,194,9.625
+"Westbrooks, Lavelle",Georgia Southern,DB,71,32.375,186,9.75
+"Abbrederis, Jared",Wisconsin,WO,73,31.375,195,9.625
+"Adams, Davante",Fresno St.,WO,73,32.625,212,9
+"Beckham, Odell",LSU,WO,71,32.75,198,10
+"Benjamin, Kelvin",Florida St.,WO,77,34.875,240,10.25
+"Boyd, Chris",Vanderbilt,WO,76,32.625,206,9.625
+"Brown, Corey",Ohio St.,WO,71,31.75,178,9.375
+"Brown, John",Pittsburg St. (KS),WO,70,30.5,179,8.5
+"Bryant, Martavis",Clemson,WO,76,32.625,211,9.5
+"Burse, Isaiah",Fresno St.,WO,70,30.25,188,8.375
+"Campanaro, Mike",Wake Forest,WO,69,30,192,9.75
+"Coleman, Brandon",Rutgers,WO,78,34,225,9.25
+"Colter, Kain",Northwestern,WO,70,31,198,10
+"Cooks, Brandin",Oregon St.,WO,70,30.75,189,9.625
+"Copeland, Damian",Louisville,WO,71,31.375,184,9
+"Davis, Mike",Texas,WO,72,32.75,197,10
+"Ellington, Bruce",South Carolina,WO,69,31,197,9.625
+"Enunwa, Quincy",Nebraska,WO,74,32.625,225,9.5
+"Evans, Mike",Texas A&M,WO,77,35.125,231,9.625
+"Evans, Shaq",UCLA,WO,73,32,213,9.375
+"Fowler, Bennie",Michigan St.,WO,73,32,217,9.5
+"Franklin, Austin",New Mexico St.,WO,71,31.25,189,10
+"Gallon, Jeremy",Michigan,WO,67,29.5,185,9.375
+"Grant, Ryan",Tulane,WO,72,31,199,9.625
+"Hazel, Matt",Coastal Carolina,WO,73,31.375,198,9.125
+"Herron, Robert",Wyoming,WO,69,30.5,193,9.75
+"Hoffman, Cody",BYU,WO,76,33.25,223,9.75
+"Huff, Josh",Oregon,WO,71,31.5,206,9.375
+"Hurns, Allen",Miami,WO,73,32,198,9.25
+"Janis, Jeff",Saginaw Valley St.,WO,75,32.5,219,9
+"Jones, T.J.",Notre Dame,WO,72,30.625,188,10
+"Landry, Jarvis",LSU,WO,71,31.75,205,10.25
+"Latimer, Cody",Indiana,WO,74,32.625,215,9.625
+"Lee, Marqise",USC,WO,72,31.75,192,9.5
+"Lucas, Marcus",Missouri,WO,76,33.625,218,9.375
+"Matthews, Jordan",Vanderbilt,WO,75,33.25,212,10.375
+"Moncrief, Donte",Mississippi,WO,74,32.375,221,9.125
+"Norwood, Kevin",Alabama,WO,74,32.125,198,10
+"Powell, Walt",Murray St.,WO,71,31.625,189,9.5
+"Reese, Tevin",Baylor,WO,70,31.625,163,8.625
+"Richardson, Paul",Colorado,WO,72,32.625,175,8.875
+"Robinson, Allen",Penn St.,WO,74,32,220,9.5
+"Saunders, Jalen",Oklahoma,WO,69,30,165,8.875
+"Snead, Willie",Ball St.,WO,71,33,195,10.25
+"Stewart, Josh",Oklahoma St.,WO,70,30,178,9.375
+"Street, Devin",Pittsburgh,WO,75,33.375,198,9.25
+"Washington, L'Damian",Missouri,WO,76,33.375,195,9
+"Watkins, Sammy",Clemson,WO,71,32,211,9.625
+"Wilson, Albert",Georgia State,WO,69,30.375,202,9.125
