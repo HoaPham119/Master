@@ -1,0 +1,28 @@
+PWD /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien
+INPUT /usr/local/texlive/2024/texmf.cnf
+INPUT /usr/local/texlive/2024/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.tex
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.log
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size10.clo
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size10.clo
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size10.clo
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/array.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/tools/array.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.aux
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.aux
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.aux
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.aux
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.pdf
+INPUT /usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Xu_ly_ngon_ngu_tu_nhien/PhamThiHoa_23C23007.aux
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb

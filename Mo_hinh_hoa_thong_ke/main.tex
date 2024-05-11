@@ -1,0 +1,91 @@
+\documentclass[12pt,a4papers]{article}
+\usepackage{amsmath}
+\usepackage[utf8]{vietnam}
+\title{
+MÔ HÌNH HOÁ THỐNG KÊ - BÀI TẬP 1 \\
+Hiện tượng đa cộng tuyến
+}
+\author{
+Nhóm 10\\
+Trịnh Quang Trí - 23C23011\\
+Phạm Thị Hòa - 23C23007
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Định nghĩa}
+Trong mô hình hồi quy bội:
+\begin{align}
+    \textit{Y} = \beta_0 + \beta_1\textit{x}_1 + \beta_2\textit{x}_2 + \hdots + \beta_k\textit{x}_k + \epsilon   \label{model}
+\end{align}
+Hiện tượng đa cộng tuyến (multicollinearity) là tình trạng trong phân tích hồi quy khi một hoặc nhiều biến độc lập có mức độ tương quan cao với nhau. Hiện tượng này có thể gây ra rất nhiều vấn đề nghiêm trọng trong mô hình này. \\
+Có hai loại đa cộng tuyến:
+\begin{description}
+    \item[Đa cộng tuyến hoàn hảo (Perfect Multicollinearity)]
+    Đa cộng tuyến hoàn hảo xảy ra khi có một mối tương quan tuyến tính chính xác (tức là tương quan có hệ số tuyến tính bằng ±1) giữa hai hoặc nhiều biến độc lập trong mô hình.
+    Trong trường hợp này, một hoặc nhiều biến độc lập có thể được biểu diễn tuyến tính hoàn toàn bằng các biến độc lập khác, và do đó, không thể ước lượng các hệ số của chúng một cách riêng lẻ.
+    Đa cộng tuyến hoàn hảo gây ra sự không thể ước lượng hợp lý (unidentifiability) và làm cho mô hình trở nên không hợp lý.
+    \item[Đa cộng tuyến không hoàn hảo (Imperfect Multicollinearity)] Đa cộng tuyến không hoàn hảo xảy ra khi có mức độ tương quan cao giữa các biến độc lập, nhưng không phải là tuyến tính hoàn toàn.
+    Trong trường hợp này, mặc dù không có một tương quan tuyến tính chính xác giữa các biến, nhưng vẫn có một mối tương quan đáng kể giữa chúng.
+    Đa cộng tuyến không hoàn hảo có thể gây ra các vấn đề như không ổn định của ước lượng hệ số và mất tính diễn giải của mô hình.
+\end{description}
+\section{Nguyên nhân}
+
+Hiện tượng đa cộng tuyến có thể xảy ra bởi môt số nguyên nhân sau:
+\begin{itemize}
+    \item Thiết kế thí nghiệm và quản lí lượng quan trắc không tốt trong quá trình thu thập dữ liệu.
+    \item Phát sinh các biến phụ thuộc mới từ các biến ban đầu.
+    \item Có sự trùng lặp giữa các biến phụ thuộc
+    \item Số lượng các quan trắc không đủ lớn
+    \item $\cdots$
+\end{itemize}
+
+\section{Tìm hiểu các nhận biết và cách khắc phục}
+\begin{itemize}
+    \item Kiểm tra trực quan: Sử dụng biểu đồ heatmap, scatter plot cho nhiều biến để nhìn được sự tương quan của các cột dữ liệu với nhau
+    \item Tính toán hệ số tương quan: Tính toán ma trận tương quan giữa các biến độc lập. Nếu có một số cặp biến có hệ số tương quan cao (gần 1 hoặc -1), đó là dấu hiệu của đa cộng tuyến.
+    \item PCA: Có thể được sử dụng để mô tả mức độ của vấn đề khi tập dữ liệu có quá nhiều yếu tố dự đoán để có thể trực quan. Nếu thành phần chính đầu tiên chiếm một lượng lớn phần trăm phương sai, điều này ngụ ý rằng có ít nhất một nhóm yếu tố dự đoán đại diện cho cùng một thông tin. Tải PCA có thể được sử dụng để hiểu cái nào
+các yếu tố dự đoán được liên kết với từng thành phần để làm sáng tỏ mối quan hệ này.
+    \item Lạm phát phương sai (variance inflation factor - VIF) trong hồi quy tuyến tính: VIF là một phép đo thống kê được sử dụng để đánh giá mức độ của đa cộng tuyến. Giá trị VIF cao (thường là hơn 10) cho biết mức độ đa cộng tuyến cao và cần phải được xử lý.
+\end{itemize}
+
+Cách khắc phục - các bước:
+\begin{itemize}
+    \item[1.] Tính toán ma trận tương quan của các yếu tố dự đoán.
+    \item[2.] Xác định hai yếu tố dự đoán liên quan đến cặp tuyệt đối lớn nhất
+mối tương quan (gọi chúng là yếu tố dự đoán A và B).
+    \item[3.] Xác định mối tương quan trung bình giữa A và các biến khác.
+Làm tương tự với yếu tố dự đoán B.
+    \item[4.] Nếu A có hệ số tương quan trung bình lớn hơn thì loại bỏ nó; mặt khác, loại bỏ yếu tố dự đoán B.
+    \item[5.] Lặp lại các bước 2–4 cho đến khi không có mối tương quan tuyệt đối nào vượt quá ngưỡng.
+\end{itemize}
+
+Giả sử chúng ta muốn sử dụng một mô hình đặc biệt nhạy cảm với mối tương quan giữa các yếu tố dự đoán, chúng ta có thể áp dụng ngưỡng 0,75. Điều này có nghĩa là chúng ta
+muốn loại bỏ số lượng dự đoán tối thiểu để đạt được tất cả theo cặp
+hệ số tương quan nhỏ hơn 0,75.
+\section{Ảnh hưởng}
+Trong công thức (\ref{model}), các tham số $\beta$ thể hiện cho mức độ biến thiên của biến phụ thuốc \textit{x} lên biến dự báo \textit{Y}. Khi có sự hiện diện của đa cộng tuyến cộng mô hình, các giá trị $\beta$ này sẽ biến thiên gần như nhau, điều này gây khó khăn cho quá trình diễn giải ý nghĩa của mô hình. Ngoài ra, trong công thức tính phương sai của ước lượng cho các tham số $\beta$,
+\begin{align}
+    \texttt{Var}(\hat{\beta_j}) = \displaystyle \frac{1}{1-\textit{R}^{2}_{j}} \times \frac{\sigma^2}{(\textit{n} - 1) \textit{S}^2_{x_j}}\quad \textit{j} = 1, 2      \label{var}
+\end{align}
+khi hiện tượng đa cộng tuyến xảy ra, giá trị tử số $(1-\textit{R}^{2}_{j})$ trong công thức (\ref{var}) sẽ tiến gần về 0, làm cho giá trị phương sai sẽ rất lớn, do đó mô hình hồi quy sẽ không còn phù hợp. \\
+Đa cộng tuyến còn ảnh hưởng rất lớn đến quá trình ước lượng tham số $\beta$
+\begin{align}
+\mathbf{\hat{\beta}} = (\textbf{X}'\textbf{X})^{-1}\textbf{X}'\textbf{Y}
+\end{align}
+như công thức trên, để xác định được các tham số $\hat{\beta}$, thì $\textbf{X}'\textbf{X}$ phải lấy được nghịch đảo $\to$ $\det(\textbf{X}'\textbf{X}) \neq 0$, nhưng khi có đa cộng tuyến giá trị của định thức sẽ bằng 0 $\to$ Không thể xác định được ước lượng $\hat{\beta}$.
+
+
+\bibliography{9}
+\begin{thebibliography}{9}
+\bibitem{simon}
+Simon J. Sheather.\textit{A Modern approach to Regression with R}
+\bibitem{gareth}
+Gareth James et al, \textit{An Introduction to Statistical Learning with Applications in R}
+\bibitem{gareth}
+Max Kuhn, Kjell Johnsonl, \textit{Applied Predictive Modeling}
+\end{thebibliography}
+\end{document}

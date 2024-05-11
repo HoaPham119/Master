@@ -1,0 +1,56 @@
+PWD /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke
+INPUT /usr/local/texlive/2024/texmf.cnf
+INPUT /usr/local/texlive/2024/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.tex
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.log
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size12.clo
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size12.clo
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/size12.clo
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/txtbabel.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel-vietnamese/vietnamese.ldf
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel-vietnamese/vietnamese.ldf
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel-vietnamese/vietnamese.ldf
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.dfu
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.dfu
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5enc.dfu
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/locale/vi/babel-vietnamese.tex
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/locale/vi/babel-vietnamese.tex
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/locale/vi/babel-vietnamese.tex
+INPUT /usr/local/texlive/2024/texmf-dist/tex/generic/babel/locale/vi/babel-vi.ini
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/setspace/setspace.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/setspace/setspace.sty
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.aux
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.aux
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.aux
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5cmr.fd
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5cmr.fd
+INPUT /usr/local/texlive/2024/texmf-dist/tex/latex/vntex/t5cmr.fd
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/vntex/vnr/vnr12.tfm
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.aux
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/vntex/vnr/vnr17.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/vntex/vnr/vnr12.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/vntex/vnr/vnr17.tfm
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/tfm/vntex/vnr/vnbx12.tfm
+OUTPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.pdf
+INPUT /usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map
+INPUT /Users/hoapham/Documents/Cá Nhân/Cao Học/Master/Mo_hinh_hoa_thong_ke/baitap1.aux
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb
+INPUT /usr/local/texlive/2024/texmf-dist/fonts/type1/vntex/vnr/vnr17.pfb

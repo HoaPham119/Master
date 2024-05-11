@@ -1,0 +1,138 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc} % Cho phép nhập liệu bằng Unicode
+\usepackage[vietnamese]{babel} % Hỗ trợ tiếng Việt
+\usepackage{hyperref} % Dùng trong phần mục lục và tài liệu tham khảo
+\usepackage{tocloft} % Để thêm dấu chấm chấm vào mục lục
+\usepackage[margin=2.54cm]{geometry} % Lề 2.54cm trên mỗi cạnh
+\usepackage{setspace} % Để thiết lập khoảng cách giữa các dòng
+\usepackage{fancyhdr} % Dùng để tạo header
+
+
+\pagestyle{fancy}
+\rhead{Bài tập môn: Phương pháp nghiên cứu khoa học - Phần \LaTeX} % Thiết lập header bên phải
+
+
+% Thêm dấu chấm vào mỗi mục trong mục lục
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% Khoảng cách giữa cách dòng và thụt đầu dong
+\setlength{\parindent}{0.5cm} % Thụt đầu dòng 0.5cm
+\setstretch{1.5} % Khoảng cách giữa các dòng 1.5 lần chiều cao của chữ
+
+% Tiêu đề, tác giả và ngày tháng
+\title {HIỂU BIẾT VỀ LATEX\\ VÀ GÓI LỆNH HYPERREF}
+\author{Phạm Thị Hoà\\
+MSHV: 23C23007\\
+Ngành: Lý Thuyết Xác Suất và Thống Kê Toán Học\\
+Khoá: 2023
+}
+\date{\today}
+
+
+\begin{document}
+
+% Tiêu đề
+\maketitle
+
+% Mục lục
+\tableofcontents
+
+% Sang trang mới để bắt đầu phần nội dung
+\newpage
+
+\section {Hiểu biết về \LaTeX}
+\subsection*{Giới thiệu tổng quan về \LaTeX:}
+\addcontentsline{toc}{subsection}{Giới thiệu tổng quan về \LaTeX}
+\begin{itemize}
+	\item \LaTeX{} là một hệ thống trình bày văn bản chất lượng cao, nó bao gồm các tính năng được thiết kế để sản xuất tài liệu kỹ thuật và khoa học. \LaTeX{} là tiêu chuẩn không chính thức cho việc truyền thông và xuất bản tài liệu khoa học. \LaTeX{} có sẵn dưới dạng phần mềm miễn phí. \LaTeX{} được phát triển bởi Leslie Lamport vào những năm 1980 như một sự mở rộng của \TeX, một hệ thống soạn thảo văn bản được tạo ra bởi Donald Knuth. \LaTeX{} cung cấp một cách tiếp cận cao cấp hơn và dễ sử dụng hơn so với \TeX{} gốc.
+
+
+	\item \LaTeX{} hoàn toàn khác biệt so với việc sử dụng những chương trình soạn thảo WYSIWYG (What You See Is What You Get) như LibreOffice Writer, Microsoft Word, hoặc Google Docs. Thay vì nhìn thấy tài liệu khi nó được tạo ra, chúng ta mô tả cách chúng ta muốn nó trông như thế nào bằng các lệnh trong một tập tin văn bản, sau đó chạy tập tin đó qua chương trình \LaTeX để xây dựng kết quả. Mặc dù điều này có nhược điểm là chúng ta cần phải tạm dừng công việc và thực hiện nhiều bước để xem tài liệu của chúng ta trông như thế nào.\newline
+\end{itemize}
+
+\subsection*{Lợi ích khi sử dụng \LaTeX:}
+\addcontentsline{toc}{subsection}{Lợi ích khi sử dụng \LaTeX}
+\begin{itemize}
+
+\item Có thể tập trung hoàn toàn vào cấu trúc và nội dung của tài liệu. \LaTeX{} sẽ tự động đảm bảo rằng kiểu chữ của tài liệu của bạn - font chữ, kích thước văn bản, chiều cao dòng và các yếu tố bố cục khác - đều nhất quán theo các quy tắc bạn đặt ra.
+\item Trong \LaTeX, cấu trúc của tài liệu là rõ ràng đối với người dùng và có thể dễ dàng sao chép sang một tài liệu khác. Trong các ứng dụng WYSIWYG, thường không rõ làm thế nào để tạo ra một định dạng cụ thể và có thể là không thể sao chép trực tiếp để sử dụng trong một tài liệu khác.
+\item Chỉ mục, chú thích, trích dẫn và tài liệu tham khảo được tạo ra dễ dàng và tự động.
+\item Công thức toán học có thể được bố trí dễ dàng. (Toán học chất lượng là một trong những động lực ban đầu của \TeX.)
+\item Vì nguồn tài liệu là văn bản thuần túy:
+	\begin{itemize}
+		\item Nguồn tài liệu có thể được đọc và hiểu bằng bất kỳ trình soạn thảo văn bản nào, khác với các định dạng nhị phân phức tạp và XML được sử dụng trong các chương trình WYSIWYG.
+		\item Bảng, hình vẽ, phương trình, v.v. có thể được tạo ra một cách tự động với bất kỳ ngôn ngữ nào.
+		\item Thay đổi có thể được theo dõi dễ dàng với phần mềm quản lý phiên bản.
+	\end{itemize}
+\item Một số tạp chí học thuật chỉ chấp nhận hoặc mạnh mẽ khuyến khích nộp bài dưới dạng tài liệu \LaTeX. Các nhà xuất bản cung cấp các mẫu \LaTeX.
+
+\end{itemize}
+Khi tệp nguồn được xử lý bởi chương trình, \LaTeX{} có thể tạo ra tài liệu trong nhiều định dạng. \LaTeX hỗ trợ mặc định các định dạng DVI và PDF, nhưng bằng cách sử dụng phần mềm khác, bạn có thể dễ dàng tạo ra PostScript, PNG, JPEG, v.v.\newline
+
+\subsection*{Các Tính Năng của \LaTeX:}
+\addcontentsline{toc}{subsection}{Các Tính Năng của \LaTeX}
+\begin{itemize}
+    \item Trình bày bài báo tạp chí, báo cáo kỹ thuật, sách và bài thuyết trình.
+    \item Kiểm soát tài liệu lớn chứa phân đoạn, tham chiếu chéo, bảng và hình ảnh.
+    \item Trình bày các công thức toán học phức tạp.
+    \item Sử dụng AMS-LaTeX để trình bày các công thức toán học phức tạp một cách chuyên sâu.
+    \item Tự động tạo ra danh mục tài liệu tham khảo và chỉ mục.
+    \item Trình bày văn bản đa ngôn ngữ.
+    \item Bao gồm hình ảnh, và màu sắc quy trình hoặc màu chấm.
+    \item Sử dụng các phông chữ PostScript hoặc Metafont.	
+\end{itemize}
+
+
+\section{Gói lệnh tâm đắc nhất - Gói lệnh \emph{hyperref}}
+
+\subsection*{Giới thiệu về gói lệnh \textbf{hyperref}:}
+\addcontentsline{toc}{subsection}{Giới thiệu về gói lệnh \textbf{hyperref}}
+Gói lệnh \textbf{hyperref}{} là một gói lệnh được sử dụng để tạo liên kết, đặc biệt là liên kết nội dung, liên kết web và liên kết giữa các phần của tài liệu \LaTeX. Dưới đây là một số thông tin chi tiết về gói lệnh \textbf{hyperref}:
+
+\begin{itemize}
+    \item \textbf{Tạo liên kết nội dung}: \textbf{hyperref} cho phép bạn tạo liên kết từ bảng mục lục, danh sách hình ảnh và bảng biểu trực tiếp đến các phần của tài liệu. Điều này giúp người đọc dễ dàng điều hướng trong tài liệu của bạn.
+    
+    \item \textbf{Liên kết web}: Bạn có thể sử dụng \textbf{hyperref} để tạo liên kết trực tiếp đến các trang web bằng cách sử dụng các URL hoặc địa chỉ email. Điều này hữu ích khi bạn muốn liên kết đến tài liệu tham khảo hoặc trang web ngoài.
+    
+    \item \textbf{Tính tương thích với PDF}: \textbf{hyperref} tương thích tốt với định dạng PDF và tạo ra các liên kết có thể được điều hướng trong tài liệu PDF. Điều này làm cho tài liệu của bạn trở nên dễ sử dụng và tiện lợi hơn khi được xem trên màn hình hoặc in ấn.
+    
+    \item \textbf{Cấu hình linh hoạt}: Gói lệnh \textbf{hyperref} cung cấp nhiều tùy chọn cấu hình để điều chỉnh cách các liên kết được hiển thị và hoạt động. Bạn có thể tùy chỉnh màu sắc, kiểu và hành vi của các liên kết để phù hợp với thiết kế của tài liệu.
+    
+    \item \textbf{Bảo mật}: \textbf{hyperref} cung cấp các tùy chọn để bảo vệ tài liệu của bạn, bao gồm việc mã hóa các liên kết và giới hạn quyền truy cập vào tài liệu.
+\end{itemize}
+
+Với gói lệnh \textbf{hyperref}, bạn có thể tăng tính tương tác và sự tiện lợi cho tài liệu \LaTeX của mình, giúp người đọc dễ dàng điều hướng và trải nghiệm tài liệu một cách thuận lợi.
+\newpage
+\subsection*{Một số lệnh thường dùng của gói lệnh \textbf{hyperref}:}
+\addcontentsline{toc}{subsection}{Một số lệnh thường dùng của gói lệnh \textbf{hyperref}}
+
+
+\begin{table}[h]
+\setstretch{1.5} %Khoảng cách các dòng trong bảng là 1.5
+\centering %canh giữa
+\caption{Tóm tắt một số lệnh thường dùng trong gói lệnh \textbf{hyperref}}
+\begin{tabular}{|c|p{10cm}|}
+\hline
+\textbf{Lệnh} & \textbf{Mô tả} \\
+\hline
+\texttt{\textbackslash url\{...\}} & Tạo liên kết đến URL \\
+\texttt{\textbackslash href\{URL\}\{text\}} & Tạo liên kết đến URL với văn bản được hiển thị \\
+\texttt{\textbackslash hypertarget\{name\}\{text\}} & Đánh dấu vị trí cho liên kết trong tài liệu \\
+\texttt{\textbackslash hyperlink\{name\}\{text\}} & Liên kết đến vị trí được đánh dấu \\
+\texttt{\textbackslash autoref\{label\}} & Tự động thêm tiền tố (e.g., "Section") vào liên kết \\
+\texttt{\textbackslash nameref\{label\}} & In ra tên thực tế của đối tượng có nhãn \\
+\texttt{\textbackslash tableofcontents} & Tạo một mục lục có thể chứa các liên kết \\
+\texttt{\textbackslash bookmark\{text\}} & Thêm bookmark vào mục lục PDF \\
+\hline
+\end{tabular}
+\end{table}
+\section*{Tài liệu tham khảo}
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+
+\begin{itemize}
+	\item[1.] \href{https://www.latex-project.org/about/}{https://www.latex-project.org/about/}
+	\item[2.] \href{https://en.wikibooks.org/wiki/LaTeX/Introduction}{https://en.wikibooks.org/wiki/LaTeX/Introduction}
+	\item[3.] \href{https://ctan.org/pkg/hyperref}{https://ctan.org/pkg/hyperref}
+\end{itemize}
+
+\end{document}
