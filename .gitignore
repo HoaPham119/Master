@@ -91,7 +91,9 @@ target/
 # Data file
 *.dat
 *.DAT
-
+*.xlsx
+*.rtf
+*.pdf
 
 # Jupyter Notebook
 .ipynb_checkpoints
