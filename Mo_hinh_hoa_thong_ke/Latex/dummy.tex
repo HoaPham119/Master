@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Biến Dummy}
+
+Biến dummy (hay còn gọi là biến giả) là các biến nhị phân được sử dụng trong phân tích hồi quy để đại diện cho các loại dữ liệu phân loại. Các biến này giúp đưa dữ liệu phân loại vào mô hình hồi quy bằng cách chuyển chúng thành các biến số có thể đo lường được.
+
+\subsection*{Cách tạo biến dummy}
+
+Giả sử chúng ta có một biến phân loại với \(k\) nhóm khác nhau (ví dụ: biến "loại nhà" có các nhóm là "nhà riêng", "căn hộ", "nhà phố"). Chúng ta sẽ tạo ra \(k-1\) biến dummy để biểu diễn biến phân loại này trong mô hình hồi quy.
+
+Ví dụ, nếu chúng ta có một biến phân loại "loại nhà" với ba loại:
+\begin{itemize}
+    \item Nhà riêng
+    \item Căn hộ
+    \item Nhà phố
+\end{itemize}
+
+Chúng ta có thể tạo hai biến dummy như sau:
+\begin{itemize}
+    \item Dummy 1: 1 nếu là nhà riêng, 0 nếu không phải
+    \item Dummy 2: 1 nếu là căn hộ, 0 nếu không phải
+\end{itemize}
+
+Nhà phố sẽ được biểu diễn bằng cả hai biến dummy đều là 0 (điều này giúp tránh đa cộng tuyến hoàn hảo).
+
+\subsection*{Ví dụ cụ thể}
+
+Giả sử chúng ta có một dataset như sau:
+\[
+\begin{array}{|c|c|c|}
+\hline
+\text{ID} & \text{Loại nhà} & \text{Giá nhà} \\
+\hline
+1 & \text{Nhà riêng} & 500 \\
+2 & \text{Căn hộ} & 300 \\
+3 & \text{Nhà phố} & 400 \\
+4 & \text{Nhà riêng} & 550 \\
+\hline
+\end{array}
+\]
+
+Chúng ta sẽ tạo ra hai biến dummy cho loại nhà:
+\[
+\begin{array}{|c|c|c|c|c|}
+\hline
+\text{ID} & \text{Nhà riêng (Dummy 1)} & \text{Căn hộ (Dummy 2)} & \text{Nhà phố (biến gốc)} & \text{Giá nhà} \\
+\hline
+1 & 1 & 0 & 0 & 500 \\
+2 & 0 & 1 & 0 & 300 \\
+3 & 0 & 0 & 1 & 400 \\
+4 & 1 & 0 & 0 & 550 \\
+\hline
+\end{array}
+\]
+
+Sau khi biến đổi, bảng dữ liệu có thể được sử dụng trong mô hình hồi quy để phân tích ảnh hưởng của loại nhà lên giá nhà. Mô hình hồi quy sẽ có dạng:
+\[
+\text{Giá nhà} = \beta_0 + \beta_1 \times \text{Nhà riêng (Dummy 1)} + \beta_2 \times \text{Căn hộ (Dummy 2)} + \epsilon
+\]
+
+Ở đây:
+\begin{itemize}
+    \item \(\beta_0\): Hệ số chặn
+    \item \(\beta_1\): Ảnh hưởng của việc nhà là nhà riêng đối với giá nhà
+    \item \(\beta_2\): Ảnh hưởng của việc nhà là căn hộ đối với giá nhà
+    \item \(\epsilon\): Sai số
+\end{itemize}
+
+Nhà phố được dùng làm nhóm tham chiếu, và tác động của việc nhà là nhà phố sẽ được ẩn giấu trong hệ số chặn \(\beta_0\).
+
+\subsection*{Lưu ý khi sử dụng biến dummy}
+
+\begin{itemize}
+    \item \textbf{Tránh đa cộng tuyến hoàn hảo}: Chỉ nên tạo \(k-1\) biến dummy cho biến phân loại có \(k\) nhóm để tránh đa cộng tuyến hoàn hảo.
+    \item \textbf{Giải thích mô hình}: Hệ số của biến dummy cho biết mức độ ảnh hưởng của nhóm đó so với nhóm tham chiếu.
+    \item \textbf{Lựa chọn nhóm tham chiếu}: Nhóm tham chiếu thường là nhóm phổ biến nhất hoặc nhóm chuẩn để các hệ số hồi quy dễ giải thích hơn.
+\end{itemize}
+
+Biến dummy là công cụ hữu ích để đưa dữ liệu phân loại vào các mô hình hồi quy, giúp phân tích và dự đoán tốt hơn.
+
+\section*{Nguyên lý toán học để tạo biến dummy}
+
+Nguyên lý toán học được áp dụng để tạo biến dummy trong phân tích hồi quy là \textbf{nguyên lý tuyến tính và giải thích của đa cộng tuyến}. Dưới đây là các nguyên lý và khái niệm liên quan:
+
+\subsection*{1. Nguyên lý tuyến tính}
+Trong mô hình hồi quy tuyến tính, chúng ta giả định rằng mối quan hệ giữa các biến độc lập (các biến phân loại và liên tục) và biến phụ thuộc là tuyến tính. Để đưa các biến phân loại vào mô hình tuyến tính, chúng ta cần chuyển chúng thành các dạng số học mà mô hình có thể xử lý được. Biến dummy là cách để mã hóa các biến phân loại thành các biến nhị phân (0 hoặc 1), để mô hình hồi quy có thể sử dụng chúng như các biến độc lập.
+
+\subsection*{2. Nguyên lý tránh đa cộng tuyến hoàn hảo}
+Đa cộng tuyến hoàn hảo xảy ra khi các biến độc lập trong mô hình hồi quy có mối tương quan tuyến tính hoàn hảo với nhau, dẫn đến việc không thể ước lượng chính xác các hệ số hồi quy. Để tránh điều này khi tạo biến dummy cho một biến phân loại với \(k\) nhóm, chúng ta tạo ra \(k-1\) biến dummy. Nhóm còn lại được sử dụng làm nhóm tham chiếu (reference group). Điều này giúp đảm bảo rằng các biến dummy không bị đa cộng tuyến hoàn hảo.
+
+\subsection*{Toán học cụ thể}
+
+Giả sử biến phân loại \(X\) có \(k\) nhóm: \(G_1, G_2, \ldots, G_k\). Chúng ta tạo \(k-1\) biến dummy \(D_1, D_2, \ldots, D_{k-1}\) như sau:
+\begin{itemize}
+    \item \(D_1 = 1\) nếu \(X = G_1\), ngược lại \(D_1 = 0\)
+    \item \(D_2 = 1\) nếu \(X = G_2\), ngược lại \(D_2 = 0\)
+    \item \(\vdots\)
+    \item \(D_{k-1} = 1\) nếu \(X = G_{k-1}\), ngược lại \(D_{k-1} = 0\)
+\end{itemize}
+
+Nhóm \(G_k\) được biểu diễn khi tất cả các biến dummy \(D_1, D_2, \ldots, D_{k-1}\) đều bằng 0.
+
+\subsection*{Ví dụ cụ thể}
+
+Giả sử biến phân loại \(X\) có ba nhóm: "Nhà riêng" (\(G_1\)), "Căn hộ" (\(G_2\)), "Nhà phố" (\(G_3\)). Chúng ta tạo hai biến dummy như sau:
+\begin{itemize}
+    \item \(D_1\): 1 nếu "Nhà riêng", 0 nếu không phải
+    \item \(D_2\): 1 nếu "Căn hộ", 0 nếu không phải
+\end{itemize}
+
+"Nhà phố" sẽ là nhóm tham chiếu, biểu diễn bởi \(D_1 = 0\) và \(D_2 = 0\).
+
+\subsection*{Mô hình hồi quy}
+
+Mô hình hồi quy tuyến tính với biến phụ thuộc \(Y\) (Giá nhà) sẽ có dạng:
+\[
+Y = \beta_0 + \beta_1 D_1 + \beta_2 D_2 + \epsilon
+\]
+
+Trong đó:
+\begin{itemize}
+    \item \(\beta_0\): Giá nhà trung bình khi \(D_1 = 0\) và \(D_2 = 0\) (tức là nhà phố)
+    \item \(\beta_1\): Mức chênh lệch giá nhà giữa "Nhà riêng" và "Nhà phố"
+    \item \(\beta_2\): Mức chênh lệch giá nhà giữa "Căn hộ" và "Nhà phố"
+    \item \(\epsilon\): Sai số
+\end{itemize}
+
+\subsection*{Lý do chỉ tạo \(k-1\) biến dummy}
+
+Nếu tạo \(k\) biến dummy (bao gồm cả nhóm tham chiếu), tổng của tất cả các biến dummy sẽ luôn bằng 1, dẫn đến đa cộng tuyến hoàn hảo. Điều này làm cho ma trận thiết kế \(X'X\) trở nên suy biến (singular matrix), khiến việc ước lượng các hệ số \(\beta\) không khả thi.
+
+\subsection*{Tóm lại}
+
+Việc tạo biến dummy dựa trên nguyên lý tuyến tính và nguyên lý tránh đa cộng tuyến hoàn hảo trong mô hình hồi quy tuyến tính. Điều này đảm bảo rằng các biến phân loại được mã hóa thành các biến số học mà mô hình có thể xử lý mà không vi phạm các giả định cơ bản của hồi quy tuyến tính.
+
+\end{document}

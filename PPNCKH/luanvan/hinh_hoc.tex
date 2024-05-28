@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb, tikz}
+\usepackage{enumitem}
+\usepackage{graphicx}
+
+\begin{document}
+
+\noindent
+\textbf{4. Cho hình bát diện đều $ABCDEF$. Chứng minh rằng:}
+\begin{enumerate}[label=(\alph*)]
+    \item Các đoạn thẳng $AF$, $BD$ và $CE$ đôi một vuông góc với nhau và cắt nhau tại trung điểm của mỗi đường.
+    \item $ABFD$, $AEFC$ và $BCDE$ là những hình vuông.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}
+    % Draw the vertices
+    \coordinate (A) at (0,4);
+    \coordinate (B) at (-2,2);
+    \coordinate (C) at (2,2);
+    \coordinate (D) at (2,-2);
+    \coordinate (E) at (-2,-2);
+    \coordinate (F) at (0,-4);
+    
+    % Draw the edges
+    \draw (A) -- (B) -- (F) -- (A) -- (C) -- (F);
+    \draw (B) -- (E) -- (D) -- (C);
+    \draw (A) -- (D);
+    \draw (F) -- (E);
+    
+    % Draw the diagonals
+    \draw[dashed] (B) -- (D);
+    \draw[dashed] (C) -- (E);
+    \draw[dashed] (A) -- (F);
+    
+    % Draw the labels
+    \node[above] at (A) {A};
+    \node[left] at (B) {B};
+    \node[right] at (C) {C};
+    \node[right] at (D) {D};
+    \node[left] at (E) {E};
+    \node[below] at (F) {F};
+\end{tikzpicture}
+\end{center}
+
+\noindent
+\textbf{Giải}
+\begin{enumerate}[label=(\alph*)]
+    \item Do $B$, $C$, $D$, $E$ cách đều $A$ và $F$ nên chúng cùng thuộc mặt phẳng trung trực của đoạn thẳng $AF$. Tương tự, $A$, $B$, $F$, $D$ cùng thuộc một mặt phẳng và $A$, $C$, $F$, $E$ cũng cùng thuộc một mặt phẳng. $BCDE$ là hình thoi nên hai đường chéo $BD$ và $EC$ vuông góc và cắt nhau tại trung điểm $I$ của mỗi đường. $ABFD$ là hình thoi nên hai đường chéo $BD$ và $AF$ vuông góc và cắt nhau tại trung điểm $I$ của mỗi đường. $AEFC$ là hình thoi nên $AF \perp CE$. Vậy $AF$, $BD$, $CE$ đôi một vuông góc nhau và cắt nhau tại trung điểm $I$ của mỗi đường.
+    \item Do $AI \perp (BCDE)$, $AB = AC = AD = AE$ nên $IB = IC = ID = IE$. Từ đó suy ra $BCDE$ là hình vuông. Tương tự $ABFD$, $AEFC$ là những hình vuông.
+\end{enumerate}
+
+\begin{center}
+\begin{tikzpicture}
+    % Draw the vertices
+    \coordinate (A) at (0,4);
+    \coordinate (B) at (-2,2);
+    \coordinate (C) at (2,2);
+    \coordinate (D) at (2,-2);
+    \coordinate (E) at (-2,-2);
+    \coordinate (F) at (0,-4);
+    \coordinate (I) at (0,0);  % Intersection point
+    
+    % Draw the edges
+    \draw (A) -- (B) -- (F) -- (A) -- (C) -- (F);
+    \draw (B) -- (E) -- (D) -- (C);
+    \draw (A) -- (D);
+    \draw (F) -- (E);
+    
+    % Draw the diagonals
+    \draw[dashed] (B) -- (D);
+    \draw[dashed] (C) -- (E);
+    \draw[dashed] (A) -- (F);
+    
+    % Draw the labels
+    \node[above] at (A) {A};
+    \node[left] at (B) {B};
+    \node[right] at (C) {C};
+    \node[right] at (D) {D};
+    \node[left] at (E) {E};
+    \node[below] at (F) {F};
+    \node[below right] at (I) {I};
+\end{tikzpicture}
+\end{center}
+
+\noindent
+\textbf{3. Cho hình hộp $ABCD.A'B'C'D'$. Tính tỉ số thể tích của khối hộp đó và thể tích của khối tứ diện $ACB'D'$.}
+
+\begin{center}
+\begin{tikzpicture}
+    % Draw the vertices
+    \coordinate (A) at (0,4);
+    \coordinate (B) at (3,4);
+    \coordinate (C) at (3,0);
+    \coordinate (D) at (0,0);
+    \coordinate (A') at (-1,5);
+    \coordinate (B') at (2,5);
+    \coordinate (C') at (2,1);
+    \coordinate (D') at (-1,1);
+    
+    % Draw the edges of the cube
+    \draw (A) -- (B) -- (C) -- (D) -- cycle;
+    \draw (A') -- (B') -- (C') -- (D') -- cycle;
+    \draw (A) -- (A');
+    \draw (B) -- (B');
+    \draw (C) -- (C');
+    \draw (D) -- (D');
+    \draw (A) -- (B');
+    % Draw the diagonals
+    \draw[dashed] (A) -- (C');
+    \draw[dashed] (B) -- (D');
+    \draw[dashed] (C) -- (D');
+    
+    % Draw the labels
+    \node[above] at (A) {A};
+    \node[above] at (B) {B};
+    \node[below] at (C) {C};
+    \node[below] at (D) {D};
+    \node[above left] at (A') {A'};
+    \node[above right] at (B') {B'};
+    \node[below right] at (C') {C'};
+    \node[below left] at (D') {D'};
+\end{tikzpicture}
+\end{center}
+
+\noindent
+\textbf{Giải}
+
+Gọi $S$ là diện tích đáy $ABCD$ và $h$ là chiều cao của khối hộp. Chia khối hộp thành khối tứ diện $ACB'D'$ và bốn khối chóp $A.A'B'D'$, $C.C'B'D'$, $B'.BAC$ và $D'.DAC$.
+
+Ta có diện tích tam giác $A'B'D'$ là 
+\[
+S_{A'B'D'} = \frac{1}{2} S_{ABCD'} = \frac{1}{2}S
+\]
+
+Thể tích khối chóp $A.A'B'D'$ là
+\[
+V_{A.A'B'D'} = \frac{1}{3} h \cdot \frac{1}{2} S = \frac{1}{6} S \cdot h
+\]
+
+Tương tự
+\[
+V_{C.C'B'D'} = V_{B'.BAC} = V_{D'.DAC} = \frac{1}{6} S \cdot h
+\]
+
+Vậy thể tích khối tứ diện $ACB'D'$ là:
+\[
+V_{ACB'D'} = V_{ABCD.A'B'C'D'} - 4V_{A.A'B'D'} = S \cdot h - 4 \cdot \frac{1}{6} S \cdot h = \frac{1}{3} S \cdot h
+\]
+
+Vậy
+\[
+\frac{V_{ABCD.A'B'C'D'}}{V_{ACB'D'}} = \frac{S \cdot h}{\frac{1}{3} S \cdot h} = 3
+\]
+
+\end{document}
