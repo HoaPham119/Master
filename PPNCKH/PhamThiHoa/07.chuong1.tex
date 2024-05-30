@@ -1,0 +1,85 @@
+\chapter{Mô hình nhân tố trực giao}
+%\addcontentsline{toc}{chapter}{Chương 0. Kiến thức chuẩn bị}
+
+\section{Giới thiệu mô hình nhân tố trực giao}
+
+Chương 1 của luận văn trình bày về mô hình nhân tố trực giao, một phương pháp phân tích dữ liệu phổ biến trong thống kê và khoa học dữ liệu. Đầu tiên, chúng ta sẽ tổng quan về hướng nghiên cứu và mô tả các kết quả đạt được.
+
+Hướng nghiên cứu này tập trung vào phân tích mô hình nhân tố để giải thích mối quan hệ giữa các biến quan sát và các nhân tố không quan sát được. Mục tiêu là xác định cấu trúc ẩn trong dữ liệu, giúp hiểu rõ hơn về mối quan hệ giữa các biến và nhận biết các yếu tố ẩn đằng sau chúng.
+
+% Mô hình nhân tố được mô tả bằng một hệ phương trình tuyến tính, trong đó các biến quan sát được (X) được giả định phụ thuộc tuyến tính vào các nhân tố không quan sát được (F) và sai số (ε). Mỗi biến quan sát được biểu diễn dưới dạng một hàm tuyến tính của các nhân tố không quan sát được cộng với sai số.
+
+Mô hình nhân tố trực giao giả định rằng các nhân tố không quan sát được độc lập và có phương sai đồng nhất. Điều này đồng nghĩa với việc mỗi nhân tố không quan sát được đều không ảnh hưởng đến nhau và có phương sai bằng nhau. Các giả định này tạo ra một mô hình đơn giản và dễ kiểm tra.
+
+Kết quả đạt được của phần này bao gồm việc mô tả về cấu trúc mô hình nhân tố trực giao, các phương pháp ước lượng tham số mô hình, và các kỹ thuật kiểm định giả định. Thông qua các phương pháp thống kê, chúng ta có thể kiểm tra mô hình nhân tố trực giao và đánh giá mức độ phù hợp của nó với dữ liệu thực tế.
+
+\section{Xây dựng mô hình nhân tố trực giao}
+
+Vector ngẫu nhiên \(X\) được quan sát với các giá trị:
+\begin{itemize}
+\item Số thành phần: \(p\) ,
+\item Trung bình: \(\mu\),
+\item Ma trận hiệp phương sai: \(\Sigma\).
+\end{itemize}
+Mô hình nhân tố giả định rằng: \(X\) phụ thuộc tuyến tính vào một số lượng ít các nhân tố không quan sát được:
+\begin{itemize}
+\item \(F_1, F_2, \ldots, F_m\), được gọi là nhân tố chung (common factors).
+\item \(p\) sai số  \(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_p\).
+\end{itemize}
+Mô hình phân tích nhân tố được mô tả:
+\begin{eqnarray}
+X_1 - \mu_1 &= \ell_{11}F_1 + \ell_{12}F_2 + \ldots + \ell_{1m}F_m + \boldsymbol{\epsilon}_1\\
+X_2 - \mu_2 &= \ell_{21}F_1 + \ell_{22}F_2 + \ldots + \ell_{2m}F_m + \boldsymbol{\epsilon}_2
+\end{eqnarray}
+\[\vdots\]
+\begin{eqnarray}
+X_p - \mu_p &= \ell_{p1}F_1 + \ell_{p2}F_2 + \ldots + \ell_{pm}F_m + \boldsymbol{\epsilon}_p
+\end{eqnarray}
+hoặc, dưới dạng ký hiệu ma trận:
+\begin{eqnarray}
+\mathbf{X} - \boldsymbol{\mu} = \mathbf{L}\mathbf{F} + \boldsymbol{\varepsilon}
+\end{eqnarray}
+Trong đó: \(\ell_{ij}\) được gọi là hệ số tải (loading) của biến thứ \(i\) trên nhân tố thứ \(j\), do đó ma trận \(L\) là ma trận của các hệ số tải nhân tố (matrix of factor loadings).
+Lưu ý: 
+\begin{itemize}
+    \item Sai số thứ \(i\) \(\boldsymbol{\epsilon}_i\) chỉ liên quan đến phản hồi \(X_i\).
+    \item \(p\) độ lệch : \(X_1 - \mu_1, X_2 - \mu_2, \ldots, X_p - \mu_p\) được biểu diễn bằng \(p + m\) theo các biến ngẫu nhiên  \(F_1, F_2, \ldots, F_m, \boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_p\), với \(F_i\) và \(\boldsymbol{\epsilon}_i\) không thể quan sát được.
+\end{itemize}
+
+Với rất nhiều đại lượng không quan sát được, việc xác minh trực tiếp mô hình nhân tố từ các quan sát trên \(X_1, X_2, \ldots, X_p\) là không thể. Tuy nhiên, với một số giả định bổ sung về các vector ngẫu nhiên \(F\) và \(\varepsilon\), mô hình nhân tố trực giao đưa ra một số mối quan hệ hiệp phương sai, mà có thể được kiểm tra.
+
+Chúng ta giả định rằng:
+\begin{eqnarray}
+E(\mathbf{F}) = \mathbf{0}_{m \times 1}, \quad \text{Cov}(\mathbf{F}) = E[\mathbf{FF}'] = \mathbf{I}_{m \times m},
+\end{eqnarray}
+\begin{eqnarray}
+E(\boldsymbol{\varepsilon}) = \mathbf{0}_{p \times 1}, \quad \text{Cov}(\boldsymbol{\varepsilon}) = E[\boldsymbol{\varepsilon} \boldsymbol{\varepsilon}'] = \boldsymbol{\Psi} =
+\begin{bmatrix}
+\psi_1 & 0 & \cdots & 0 \\
+0 & \psi_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \psi_p
+\end{bmatrix}_{p \times p},
+\end{eqnarray}
+
+Trong đó \(\mathbf{0}_{m \times 1}\) và \(\mathbf{0}_{p \times 1}\) là các vector không, \(\mathbf{I}_{m \times m}\) là ma trận đơn vị kích thước \(m \times m\), và \(\boldsymbol{\Psi}\) là ma trận đường chéo với các phần tử \(\psi_1, \psi_2, \ldots, \psi_p\) trên đường chéo chính.
+
+Do \(F\) và \(\boldsymbol{\epsilon}\) là độc lập, vì vậy:
+
+\begin{eqnarray}
+\text{Cov}(\boldsymbol{\epsilon}, \mathbf{F}) = E(\boldsymbol{\epsilon}\mathbf{F}') = \mathbf{0}_{p \times m},
+\end{eqnarray}
+
+Những giả định này và mối quan hệ trong công thức (1.4) tạo thành mô hình nhân tố trực giao (orthogonal factor model).
+
+\section{Ý nghĩa của mô hình nhân tố trực giao}
+Trong nghiên cứu này, chúng ta đã thành công trong việc áp dụng mô hình nhân tố trực giao để phân tích mối quan hệ giữa các biến quan sát và các nhân tố không quan sát được trong một tập dữ liệu. Các kết quả chính sau đây đã được đạt được:
+
+\begin{enumerate}
+    \item Xác định cấu trúc ẩn: Mô hình nhân tố trực giao đã giúp chúng ta xác định và mô tả cấu trúc ẩn trong dữ liệu, qua đó hiểu rõ hơn về mối quan hệ giữa các biến và nhận biết các yếu tố ẩn đằng sau chúng.
+    \item Đánh giá mức độ phù hợp của mô hình: Chúng ta đã sử dụng các phương pháp thống kê để kiểm tra mức độ phù hợp của mô hình với dữ liệu thực tế. Các kết quả kiểm định cho thấy rằng mô hình nhân tố trực giao có khả năng giải thích một phần lớn sự biến động trong dữ liệu.
+    \item Tính giảm chiều dữ liệu: Mô hình nhân tố trực giao đã giúp chúng ta giảm chiều dữ liệu bằng cách biểu diễn các biến quan sát được dưới dạng của một số lượng ít các nhân tố không quan sát được, từ đó giúp tăng hiệu suất và khả năng hiểu quả của phân tích.
+\end{enumerate}
+
+Tóm lại, nghiên cứu này đã minh họa sự ứng dụng hiệu quả của mô hình nhân tố trực giao trong phân tích dữ liệu, đặc biệt trong việc xác định cấu trúc ẩn và giảm chiều dữ liệu. Các kết quả này có thể cung cấp sự hỗ trợ quan trọng cho quyết định và dự đoán trong nhiều lĩnh vực, từ nghiên cứu khoa học đến ứng dụng thương mại.
+

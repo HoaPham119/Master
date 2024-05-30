@@ -1,9 +1,0 @@
-\babel@toc {vietnamese}{}\relax 
-\contentsline {section}{\numberline {1}Hiểu biết về \LaTeX }{2}{section.1}%
-\contentsline {subsection}{Giới thiệu tổng quan về \LaTeX }{2}{section*.1}%
-\contentsline {subsection}{Lợi ích khi sử dụng \LaTeX }{2}{section*.2}%
-\contentsline {subsection}{Các Tính Năng của \LaTeX }{3}{section*.3}%
-\contentsline {section}{\numberline {2}Gói lệnh tâm đắc nhất - Gói lệnh \emph {hyperref}}{4}{section.2}%
-\contentsline {subsection}{Giới thiệu về gói lệnh \textbf {hyperref}}{4}{section*.4}%
-\contentsline {subsection}{Một số lệnh thường dùng của gói lệnh \textbf {hyperref}}{5}{section*.5}%
-\contentsline {section}{Tài liệu tham khảo}{5}{section*.6}%
