@@ -38,7 +38,8 @@ MANIFEST
 *.out
 *.gz
 *.fdb_latexmk
-
+*.nav
+*.snm
 *.DS_Store
 *.docx
 *.synctex
