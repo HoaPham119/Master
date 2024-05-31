@@ -1,0 +1,72 @@
+\section{Chương 1: Mô hình nhân tố trực giao}
+\begin{frame}{Chương 1: Mô hình nhân tố trực giao}
+\frametitle{Chương 1: Mô hình nhân tố trực giao}
+Vector ngẫu nhiên \(X\) được quan sát với các giá trị:
+\begin{itemize}[label={-}]
+\item Số thành phần: \(p\) ,
+\item Trung bình: \(\mu\),
+\item Ma trận hiệp phương sai: \(\Sigma\).
+\end{itemize}
+
+Mô hình nhân tố giả định rằng: \(X\) phụ thuộc tuyến tính vào một số lượng ít các nhân tố không quan sát được:
+\begin{itemize}[label={-}]
+\item \(F_1, F_2, \ldots, F_m\), được gọi là nhân tố chung (common factors).
+\item \(p\) sai số  \(\boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_p\).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Chương 1: Mô hình nhân tố trực giao}
+Mô hình phân tích nhân tố được mô tả:
+\begin{eqnarray}
+X_1 - \mu_1 &= \ell_{11}F_1 + \ell_{12}F_2 + \ldots + \ell_{1m}F_m + \boldsymbol{\epsilon}_1\\
+X_2 - \mu_2 &= \ell_{21}F_1 + \ell_{22}F_2 + \ldots + \ell_{2m}F_m + \boldsymbol{\epsilon}_2
+\end{eqnarray}
+\[\vdots\]
+\begin{eqnarray}
+X_p - \mu_p &= \ell_{p1}F_1 + \ell_{p2}F_2 + \ldots + \ell_{pm}F_m + \boldsymbol{\epsilon}_p
+\end{eqnarray}
+hoặc, dưới dạng ký hiệu ma trận:
+\begin{eqnarray}
+\mathbf{X} - \boldsymbol{\mu} = \mathbf{L}\mathbf{F} + \boldsymbol{\varepsilon}
+\end{eqnarray}
+Trong đó: \(\ell_{ij}\) được gọi là hệ số tải (loading) của biến thứ \(i\) trên nhân tố thứ \(j\), do đó ma trận \(L\) là ma trận của các hệ số tải nhân tố (matrix of factor loadings).
+    
+\end{frame}
+
+\begin{frame}{Chương 1: Mô hình nhân tố trực giao}
+Lưu ý: 
+\begin{itemize}
+    \item Sai số thứ \(i\) \(\boldsymbol{\epsilon}_i\) chỉ liên quan đến phản hồi \(X_i\).
+    \item \(p\) độ lệch : \(X_1 - \mu_1, X_2 - \mu_2, \ldots, X_p - \mu_p\) được biểu diễn bằng \(p + m\) theo các biến ngẫu nhiên  \(F_1, F_2, \ldots, F_m, \boldsymbol{\epsilon}_1, \boldsymbol{\epsilon}_2, \ldots, \boldsymbol{\epsilon}_p\), với \(F_i\) và \(\boldsymbol{\epsilon}_i\) không thể quan sát được.
+\end{itemize}
+
+Với rất nhiều đại lượng không quan sát được, việc xác minh trực tiếp mô hình nhân tố từ các quan sát trên \(X_1, X_2, \ldots, X_p\) là không thể. Tuy nhiên, với một số giả định bổ sung về các vector ngẫu nhiên \(F\) và \(\varepsilon\), mô hình nhân tố trực giao đưa ra một số mối quan hệ hiệp phương sai, mà có thể được kiểm tra.
+\end{frame}
+
+\begin{frame}{Chương 1: Mô hình nhân tố trực giao}
+Chúng ta giả định rằng:
+\begin{eqnarray}
+E(\mathbf{F}) = \mathbf{0}_{m \times 1}, \quad \text{Cov}(\mathbf{F}) = E[\mathbf{FF}'] = \mathbf{I}_{m \times m},
+\end{eqnarray}
+\begin{eqnarray}
+E(\boldsymbol{\varepsilon}) = \mathbf{0}_{p \times 1}, \quad \text{Cov}(\boldsymbol{\varepsilon}) = E[\boldsymbol{\varepsilon} \boldsymbol{\varepsilon}'] = \boldsymbol{\Psi} =
+\begin{bmatrix}
+\psi_1 & 0 & \cdots & 0 \\
+0 & \psi_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \psi_p
+\end{bmatrix}_{p \times p},
+\end{eqnarray}
+
+Trong đó \(\mathbf{0}_{m \times 1}\) và \(\mathbf{0}_{p \times 1}\) là các vector không, \(\mathbf{I}_{m \times m}\) là ma trận đơn vị kích thước \(m \times m\), và \(\boldsymbol{\Psi}\) là ma trận đường chéo với các phần tử \(\psi_1, \psi_2, \ldots, \psi_p\) trên đường chéo chính.
+\end{frame}
+
+\begin{frame}{Chương 1: Mô hình nhân tố trực giao}
+Do \(F\) và \(\boldsymbol{\epsilon}\) là độc lập, vì vậy:
+
+\begin{eqnarray}
+\text{Cov}(\boldsymbol{\epsilon}, \mathbf{F}) = E(\boldsymbol{\epsilon}\mathbf{F}') = \mathbf{0}_{p \times m},
+\end{eqnarray}
+
+Những giả định này và mối quan hệ trong công thức (1.4) tạo thành mô hình nhân tố trực giao (orthogonal factor model).
+\end{frame}

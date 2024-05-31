@@ -39,19 +39,4 @@
 %%----- Tạo môi trường có tên Ví dụ và đánh số cho ví dụ (cùng cấp với section)----- 
 \newcounter{danhsovidu}[section] %tao o dem moi de danh so cho vi du
 \newenvironment{vidu}{\stepcounter{danhsovidu}\par\noindent{\bfseries Ví dụ \thesection.\thedanhsovidu.}}{\par}
-%%---------------------------------
-%%
-%%----------Tự tạo header và footer riêng-----------------------%%
-\makeatletter
-\newcommand{\ps@myplain}{%khai báo kiểu định dạng mới myplain
-% \renewcommand{\@oddhead}{\textit{Luận văn thạc sĩ - Chuyên ngành Đại số và Lý thuyết số}\hrulefill Trang \thepage} 
-%tạo header trang lẻ
-% \renewcommand{\@evenhead}{Trang \thepage \hrulefill \textit{Mẫu luận văn cao học}} 
-%tạo header trang chẵn
-%  \renewcommand{\@oddfoot}{\mbox{\emph{Luận văn cao học}}\dotfill Trang \thepage} 
-% tạo footer trang lẻ
-% \renewcommand{\@evenfoot}{\@oddfoot}}
-} 
-% tạo footer trang chẵn giống footer trang lẻ
-% \makeatother
 %%----------------End of file def.tex
