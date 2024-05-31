@@ -3,7 +3,7 @@
 
 Hình học thể tích khối lăng trụ là một phần quan trọng trong chương trình hình học lớp 12 vì nó cung cấp kiến thức về cách tính toán và ứng dụng thể tích của các hình khối phổ biến trong thực tế. Ý nghĩa của việc nghiên cứu về thể tích khối lăng trụ trong nội dung hình học lớp 12 có thể được tóm tắt như sau:
 
-\begin{enumerate}
+\begin{enumerate}[label={-}]
     \item \textbf{Hiểu biết về không gian ba chiều:} Việc học về thể tích khối lăng trụ giúp học sinh hiểu về không gian ba chiều và cách tính toán thể tích của các hình khối phức tạp. Điều này giúp họ phát triển khả năng tư duy không gian và trực quan hóa về cách các hình khối tồn tại và tương tác trong không gian.
     
     \item \textbf{Ứng dụng trong thực tế:} Kiến thức về thể tích khối lăng trụ được áp dụng rộng rãi trong thực tế, từ xây dựng và kiến trúc đến sản xuất và logistics. Việc biết cách tính toán và đo lường thể tích của các hình khối giúp trong việc thiết kế và quản lý không gian, vật liệu và tài nguyên.
@@ -15,21 +15,19 @@ Hình học thể tích khối lăng trụ là một phần quan trọng trong c
 
 Vì vậy, nắm vững kiến thức về thể tích khối lăng trụ không chỉ là một yêu cầu trong chương trình hình học lớp 12 mà còn mang lại nhiều lợi ích trong việc hiểu biết thế giới xung quanh và phát triển kỹ năng sống cho học sinh.
 
-
 \section{Thể tích khối lăng trụ}
 
 Nếu ta xem khối hộp chữ nhật $ABCD.A'B'C'D'$ như là khối lăng trụ có đáy là hình chữ nhật $A'B'C'D'$ và đường cao $AA'$ thì thể tích của nó bằng diện tích đáy nhân với chiều cao. Ta có thể chứng minh được rằng điều đó cũng đúng đối với một khối lăng trụ bất kì.
 
-Thể tích khối lăng trụ có diện tích đáy $B$ và chiều cao $h$ là:
+\id {Thể tích khối lăng trụ} có diện tích đáy $B$ và chiều cao $h$ là:
 \begin{eqnarray}
     V = Bh
 \end{eqnarray}
 
 \definecolor{aqaqaq}{rgb}{0.6274509803921569,0.6274509803921569,0.6274509803921569}
-\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.3cm,y=0.3cm]
-% \clip(-34.46178,-21.823355714077497) rectangle (23.554536323184955,26.839702526695376);
-% \fill[line width=2.pt,color=aqaqaq,fill=aqaqaq,fill opacity=0.5] (-22.,-6.) -- (-26.,-8.) -- (-14.,-8.) -- (-10.,-6.) -- cycle;
-% \fill[line width=2.pt,color=aqaqaq,fill=aqaqaq,fill opacity=0.75] (8.,-2.) -- (2.,-6.) -- (4.,-8.) -- (10.,-6.) -- (12.,-4.) -- cycle;
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.25cm,y=0.25cm]
 \draw [line width=1.2pt] (-22.,4.)-- (-26.,2.);
 \draw [line width=1.2pt] (-26.,2.)-- (-14.,2.);
 \draw [line width=1.2pt] (-14.,2.)-- (-10.,4.);
@@ -109,9 +107,11 @@ Thể tích khối lăng trụ có diện tích đáy $B$ và chiều cao $h$ l�
 \draw[color=black] (7.006477665049899,-1.7760071242967355) node {$h$};
 \end{scriptsize}
 \end{tikzpicture}
+\caption{Hình Khối hộp chữ nhật và khối lăng trụ}
+\end{figure}
 
 \section{Thể tích khối chóp}
-Đối với khối chóp, người ta chứng minh được thể tích của khối chóp có diện tích đáy \( B \) và chiều cao \( h \) là:
+Đối với khối chóp, người ta chứng minh được \id {thể tích của khối chóp} có diện tích đáy \( B \) và chiều cao \( h \) là:
 \begin{eqnarray}
     V = \frac{1}{3} Bh
 \end{eqnarray}
@@ -126,6 +126,8 @@ Cho hình lăng trụ tam giác $ABC.A'B'C'$. Gọi $E$ và $F$ lần lượt l�
 \end{enumerate}
 
 \section*{Giải}
+\begin{figure}[htbp]
+\centering
 \begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=0.012cm,y=0.012cm]
     % \clip(-688.9650857050052,-703.5746060309538) rectangle (312.48744227387573,97.82139895237928);
     \draw [line width=1.2pt] (-200.,-50.)-- (-200.,-250.);
@@ -169,6 +171,8 @@ Cho hình lăng trụ tam giác $ABC.A'B'C'$. Gọi $E$ và $F$ lần lượt l�
     \draw[color=black] (-281.8325159191985,-561.4291832492385) node {$F'$};
     \end{scriptsize}
     \end{tikzpicture}
+\caption{Hình vẽ minh hoạ}
+\end{figure}
 \begin{enumerate}[label=(\alph*)]
     \item Hình chóp $C.A'B'C'$ và hình lăng trụ $ABC.A'B'C'$ có đáy và đường cao bằng nhau nên $V_{C.A'B'C'} = \frac{1}{3} V$. Từ đó suy ra $V_{C.ABB'A'} = V - \frac{1}{3}V = \frac{2}{3} V$.
     

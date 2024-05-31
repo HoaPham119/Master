@@ -9,25 +9,26 @@
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage[utf8]{inputenc}
-\usepackage[top=3.5cm, bottom=3cm, left=3.5cm, right=2cm] {geometry}
-\setlength{\parindent}{0.6cm}
-\setlength{\parskip}{0.2cm}
-\usetikzlibrary{calc}
-\usetikzlibrary{arrows}
 \usepackage{pgfplots}
+\usepackage{setspace}
+\usepackage{caption}  % Gói lệnh cho phần chú thích của hình vẽ
+\usepackage{tocloft}  % Gói lệnh cho chỉ mục
+\usepackage[top=3.5cm, bottom=3cm, left=3.5cm, right=2cm] {geometry}
+\setstretch{1.5}
+\usetikzlibrary{arrows}
 \makeindex
 \begin{document}
 \input def
-% \pagestyle{myplain}
+\pagestyle{empty}
 \include{01.biangoai}
 \include{02.biatrong}
 \include{03.loicamdoan}
 \include{04.loicamon}
 \tableofcontents
-
-% \include{05.thongtinluanvan}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\include{05.thongtinluanvan}
 \include{06.loinoidau}
-
 \include{07.chuong1}
 \include{08.chuong2}
 \include{09.ketluan}
