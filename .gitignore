@@ -154,7 +154,7 @@ venv.bak/
 virtenv
 qaqc_env/
 qaqc/
-
+env-nlp
 # VS Code
 .vscode/
 
