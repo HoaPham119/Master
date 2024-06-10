@@ -33,7 +33,7 @@ Bộ dữ liệu Nhà ở Boston là kết quả từ thông tin được thu th
 - ptratio: Tỷ lệ học sinh - giáo viên theo thị trấn
 - black: Tỉ lệ người da đen theo thị trấn
 - lstat: Tỉ lệ phần trăm của dân số có địa vị xã hội thấp
-- medv: Giá trị trung bình của các căn nhà đã được sở hữu, tính bằng nghìn đô la
+- medv: Giá trị trung vị của các căn nhà đã được sở hữu, tính bằng nghìn đô la
 
 ## Kiểm tra kiểu dữ liệu
 ```{r}
