@@ -1,42 +1,35 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage{amssymb,amsthm,makeidx,enumerate}
 \usepackage[utf8]{vietnam}
-% \usepackage{scrextend} %Tăng cỡ chữ
-% \changefontsizes{13pt}%Cỡ chữ mới là 13pt
+\usepackage{pdfpages}
 \usepackage{hyperref}
-% \usepackage{times}
+\usepackage[toc,page]{appendix}
 \usepackage{amsmath}
-\usepackage{tikz}
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage[utf8]{inputenc}
-\usepackage{pgfplots}
 \usepackage{setspace}
-\usepackage{caption}
-\usepackage{tocloft}
 \usepackage[top=3.5cm, bottom=3cm, left=3.5cm, right=2cm] {geometry}
 \setstretch{1.5}
-\usetikzlibrary{arrows}
-\makeindex
 \begin{document}
 \input def
-\pagestyle{empty}
+\pagestyle{plain}
 \include{01.biangoai}
 \include{01.thuchanh}
-\incl
-% \include{02.biatrong}
-% \include{03.loicamdoan}
-% \include{04.loicamon}
-% \tableofcontents
-% \addcontentsline{toc}{chapter}{\listfigurename}
-% \listoffigures
-% \include{05.thongtinluanvan}
-% \include{06.loinoidau}
-% \include{07.chuong1}
-% \include{08.chuong2}
-% \include{09.ketluan}
-% \include{10.thamkhao}
-% \newpage
-% \addcontentsline{toc}{chapter}{\indexname}
-% \printindex
+\include{01.lythuyet}
+\renewcommand{\appendixname}{Phụ lục}
+\renewcommand{\appendixtocname}{Phụ lục}
+\renewcommand{\appendixpagename}{Phụ lục}
+
+\newpage
+\begin{appendices}
+\renewcommand{\thesection}{\Alph{section}}
+
+{\bf A STUDY AND PERFORMANCE ANALYSIS OF RSA ALGORITHM}\\
+\label{appendix:a}
+Dưới đây là tài liệu đính kèm.
+
+% Chèn tệp PDF đính kèm vào phụ lục
+\includepdf[pages=-]{paper.pdf}
+\end{appendices}
 \end{document}

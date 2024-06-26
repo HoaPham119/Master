@@ -1,10 +1,21 @@
-\section {Phần thực hành}
+\section{Phần thực hành}
 {\bf Câu 1.} Hãy làm một bản tóm tắt khoa học và một bản nhận xét khoa
 học đối với một bài báo nào đó (do học viên tự chọn) đã được đăng trên các
-tạp chí ngành Toán (cần đính kèm bản copy bài báo)\\
+tạp chí ngành Toán (cần đính kèm bản copy bài báo).\\
+{\bf Trả lời}\\
+Bài báo đính kèm: \hyperref[appendix:a]{\bf A STUDY AND PERFORMANCE ANALYSIS OF RSA ALGORITHM}.\\
+{\bf Tóm tắt khoa học:} Bài báo "A Study and Performance Analysis of RSA Algorithm" của M. Preetha và M. Nithya phân tích hiệu suất của thuật toán RSA và phiên bản cải tiến RSA-OAEP.
+Thuật toán RSA là thuật toán mã hóa khóa công khai phổ biến, dựa trên độ khó của việc phân tích nhân tử các số nguyên lớn.
+Bài báo so sánh RSA và RSA-OAEP qua phân tích thời gian mã hóa và giải mã trên nhiều kích thước tệp khác nhau.
+Kết quả cho thấy RSA-OAEP mất nhiều thời gian hơn nhưng cung cấp mức độ bảo mật cao hơn so với RSA tiêu chuẩn.\\
+{\bf Nhận xét khoa học:} Bài báo này cung cấp một phân tích chi tiết về hiệu suất của thuật toán RSA và phiên bản nâng cao RSA-OAEP. Một điểm nổi bật của bài báo là sự kết hợp giữa lý thuyết và thực nghiệm, làm rõ thời gian mã hóa và giải mã cho các kích thước tệp khác nhau. Kết quả cho thấy RSA-OAEP mặc dù tốn nhiều thời gian hơn, nhưng lại cung cấp mức độ bảo mật cao hơn nhờ lớp đệm ngẫu nhiên bổ sung.\\
+Bài báo đặc biệt nhấn mạnh việc sử dụng OAEP để tăng cường bảo mật cho RSA, giúp làm tăng độ khó cho các cuộc tấn công mã hóa. Tuy nhiên, sự cân bằng giữa bảo mật và hiệu suất cần được cân nhắc kỹ lưỡng trong các ứng dụng thực tế.\\
+Dù nghiên cứu đã đưa ra một so sánh rõ ràng giữa RSA và RSA-OAEP, bài báo có thể được cải thiện bằng cách mở rộng phân tích sang các thuật toán khác như ECC (Elliptic Curve Cryptography) để cung cấp một cái nhìn toàn diện hơn. Hơn nữa, thử nghiệm trên nhiều loại dữ liệu và môi trường khác nhau sẽ giúp tăng tính tổng quát của kết quả.\\
+Tóm lại, bài báo đóng góp quan trọng vào lĩnh vực mã hóa bằng cách cung cấp các phân tích và kết quả thực nghiệm chi tiết, giúp người đọc hiểu rõ hơn về hiệu suất và bảo mật của các thuật toán RSA và RSA-OAEP. Tuy nhiên, để đảm bảo tính tổng quát, cần thêm các so sánh với các thuật toán khác và các thử nghiệm trong môi trường đa dạng hơn.\\
 {\bf Câu 2. } Hãy chọn một chủ đề bất kỳ trong chương trình toán cao cấp
 để soạn thành một bài giảng theo phong cách viết giáo trình.\\
 Chủ đề: Ma trận - Định thức\\
+Bài giảng: Trang sau
 \newpage
 \begin{center}
     \huge {\bf MA TRẬN - ĐỊNH THỨC}
@@ -316,11 +327,12 @@ c_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj} = \sum_{k=1}^n a_{i
 \]
 
 \textit{Tính chất}
-(i) Tính kết hợp: Cho \( A \in M_{m \times n}, B \in M_{n \times p} \) và \( C \in M_{p \times q} \), ta có
+
+(i) \textit{Tính kết hợp}: Cho \( A \in M_{m \times n}, B \in M_{n \times p} \) và \( C \in M_{p \times q} \), ta có
 \[
 (AB)C = A(BC).
 \]
-A(BC) = (AB)C.
+\[ A(BC) = (AB)C. \]
 
 (ii) \textit{Tính phân phối}: Với mọi ma trận \( A, B \in M_{m \times n} \) và \( C \in M_{n \times p} \), ta có
 \[
@@ -774,6 +786,8 @@ Tính định thức của ma trận \(A\). Chúng ta khai triển định thứ
 3 & 1 & 2 \\
 4 & 2 & 3
 \end{vmatrix}
+\]
+\[
 + (-1)^{1+3} 3 \begin{vmatrix}
 2 & 3 & 4 \\
 3 & 4 & 1 \\
@@ -975,6 +989,7 @@ A = \begin{pmatrix}
 Ta có: \(\det(A) = \det(B) = -21\).
 \subsubsection*{2.3. Các tính chất định thức}
 
+
 i) \textit{Tính chất 1.} Cho ma trận vuông \(A\). Ta có \(\det(A) = \det(A^T)\).
 
 \textbf{Ví dụ 17.} Cho ma trận:
@@ -985,8 +1000,7 @@ A = \begin{pmatrix}
 3 & 1 & 2
 \end{pmatrix}
 \]
-Ta có: \(\det(A) = \det(A^T) = -46\).
-
+Ta có: \(\det(A) = \det(A^T) = -46\).\\
 ii) \textit{Tính chất 2.} Cho \(A, B\) là hai ma trận vuông. Ta có
 \[
 \det(AB) = \det(BA) = \det(A)\det(B).
@@ -1015,9 +1029,7 @@ ii) \textit{Tính chất 2.} Cho \(A, B\) là hai ma trận vuông. Ta có
     \end{pmatrix} \)
     \item[b)] Ta có: \(\det(A) = -2; \det(B) = 2; \det(AB) = \det(BA) = -4\).
 \end{itemize}
-
-iii) \textit{Tính chất 3.} Cho \(I\) là ma trận đơn vị cấp \(n\). Ta có \(\det(I) = 1\).
-
+iii) \textit{Tính chất 3.} Cho \(I\) là ma trận đơn vị cấp \(n\). Ta có \(\det(I) = 1\).\\
 iv) \textit{Tính chất 4.} Cho ba ma trận \(A, B, C \in M_n\) thỏa mãn:
 \[
 [C]_{ij} = [A]_{ij} + [B]_{ij} \quad \text{và} \quad [C]_{ij} = [A]_{ij} = [B]_{ij}, \quad i = 2, 3, \ldots, n; j = 1, 2, \ldots, n.
@@ -1048,8 +1060,7 @@ a + b & b + c & c + a \\
 \[
 \det(A) = -a + 2b - c; \det(B) = -a - b + 2c; \det(C) = -2a + b + c.
 \]
-Vậy \(\det(C) = \det(A) + \det(B)\).
-
+Vậy \(\det(C) = \det(A) + \det(B)\).\\
 v) \textit{Tính chất 5.} Cho số thực \(k \in \mathbb{R}\) và ma trận \(A \in M_n\). Ta có \(\det(kA) = k^n \det(A)\).
 
 \textbf{Ví dụ 20.} Cho ma trận \(A = \begin{pmatrix}
@@ -1064,14 +1075,10 @@ Ta có:
 
 \subsubsection*{1.2.4. Định lý sự thay đổi của định thức qua các phép biến đổi}
 
-i) Nếu \(A \xrightarrow{(i) \leftrightarrow (i')} B\) thì \(\det(B) = -\det(A)\).
-
-ii) Nếu \(A \xrightarrow{(i)=\alpha(i) \\ \alpha \neq 0} B\) thì \(\det(B) = \alpha \det(A)\).
-
-iii) Định thức của ma trận có 2 dòng hoặc hai cột tỉ lệ với nhau thì bằng 0.
-
-iv) Nếu \(A \xrightarrow{(i)=(i)+\alpha(i')} B\) thì \(\det(B) = \det(A)\).
-
+i) Nếu \(A \xrightarrow{(i) \leftrightarrow (i')} B\) thì \(\det(B) = -\det(A)\).\\
+ii) Nếu \(A \xrightarrow{(i)=\alpha(i) \\ \alpha \neq 0} B\) thì \(\det(B) = \alpha \det(A)\).\\
+iii) Định thức của ma trận có 2 dòng hoặc hai cột tỉ lệ với nhau thì bằng 0.\\
+iv) Nếu \(A \xrightarrow{(i)=(i)+\alpha(i')} B\) thì \(\det(B) = \det(A)\).\\
 v) Định thức của ma trận tam giác trên bằng tích các số hạng nằm trên đường.
 
 \textbf{Ví dụ 21.} Cho ma trận: \(A = \begin{pmatrix}
@@ -1224,17 +1231,19 @@ A_{11}^* = (-1)^{1+1} \left| \begin{pmatrix}
 \end{pmatrix} \right| = 1, \quad A_{12}^* = (-1)^{1+2} \left| \begin{pmatrix}
 -1 & 1 \\
 -2 & 1
-\end{pmatrix} \right| = 1, \quad A_{13}^* = (-1)^{1+3} \left| \begin{pmatrix}
--1 & 2 \\
--2 & 3
 \end{pmatrix} \right| = 1,
 \]
 
 \[
-A_{21}^* = (-1)^{2+1} \left| \begin{pmatrix}
+A_{13}^* = (-1)^{1+3} \left| \begin{pmatrix}
+-1 & 2 \\
+-2 & 3
+\end{pmatrix} \right| = 1, \quad A_{21}^* = (-1)^{2+1} \left| \begin{pmatrix}
 -1 & 1 \\
 3 & 1
-\end{pmatrix} \right| = 4, \quad A_{22}^* = (-1)^{2+2} \left| \begin{pmatrix}
+\end{pmatrix} \right| = 4,
+\]
+\[ A_{22}^* = (-1)^{2+2} \left| \begin{pmatrix}
 1 & 1 \\
 -2 & 1
 \end{pmatrix} \right| = 3, \quad A_{23}^* = (-1)^{2+3} \left| \begin{pmatrix}
@@ -1247,10 +1256,16 @@ A_{21}^* = (-1)^{2+1} \left| \begin{pmatrix}
 A_{31}^* = (-1)^{3+1} \left| \begin{pmatrix}
 -1 & 1 \\
 2 & 1
-\end{pmatrix} \right| = -3, \quad A_{32}^* = (-1)^{3+2} \left| \begin{pmatrix}
+\end{pmatrix} \right| = -3, 
+\]
+\[
+A_{32}^* = (-1)^{3+2} \left| \begin{pmatrix}
 1 & 1 \\
 -1 & 1
-\end{pmatrix} \right| = -2, \quad A_{33}^* = (-1)^{3+3} \left| \begin{pmatrix}
+\end{pmatrix} \right| = -2,
+\]
+\[
+A_{33}^* = (-1)^{3+3} \left| \begin{pmatrix}
 1 & -1 \\
 -1 & 2
 \end{pmatrix} \right| = 1.
@@ -1454,6 +1469,8 @@ A = \begin{pmatrix}
 0 & -5 & m - 4 \\
 0 & -1 & -1
 \end{pmatrix}
+\]
+\[
 \xrightarrow{(3) = (3) - \frac{1}{5}(2)}
 \begin{pmatrix}
 1 & 3 & 2 \\
@@ -1552,7 +1569,6 @@ BA = 9I_2 = \begin{pmatrix}
 \end{pmatrix}.
 \]
 \subsection*{5. Bài tập}
-
 \textbf{Bài số 1.} Thực hiện các phép tính trên các ma trận sau:
 1. Tính \( 5A - 3B + 2C \), biết:
 \[
@@ -1628,8 +1644,7 @@ BA = \begin{pmatrix}
 29 & -56 & 27 \\
 17 & -36 & 19 \\
 14 & -25 & 11
-\end{pmatrix} \)
-
+\end{pmatrix} \)\\
 \textbf{Bài số 2.} Cho \( A = \begin{pmatrix}
 2 & 0 & 1 \\
 3 & 1 & 2 \\
@@ -1640,8 +1655,7 @@ BA = \begin{pmatrix}
 -3 & -1 & -3 \\
 -6 & -3 & -5 \\
 -3 & 4 & 1
-\end{pmatrix} \).
-
+\end{pmatrix} \).\\
 \textbf{Bài số 3.} Cho các ma trận: \( A = \begin{pmatrix}
 2 & -1 & 3 \\
 0 & 1 & 2
@@ -1686,8 +1700,7 @@ BA = \begin{pmatrix}
 2 & 2 \\
 -1 & 0 \\
 3 & 5
-\end{pmatrix}\).
-
+\end{pmatrix}\).\\
 \textbf{Bài số 4.} Cho ma trận \(A = \begin{pmatrix}
 1 & -2 & 6 \\
 4 & 3 & -8 \\
@@ -1698,8 +1711,7 @@ BA = \begin{pmatrix}
 -1 & 3 & -9 \\
 -6 & -4 & 12 \\
 -3 & 3 & -7
-\end{pmatrix}\).
-
+\end{pmatrix}\).\\
 \textbf{Bài số 5.} Tính các định thức sau:\\
 
 1. \(\begin{vmatrix}
@@ -1755,8 +1767,7 @@ g & h & k & u & l \\
 3) \(160\);
 4) \(abcd\);
 5) \(xyzuv\);
-6) \(394\).
-
+6) \(394\).\\
 \textbf{Bài số 6.} Chứng tỏ rằng các định thức sau bằng không
 
 1. \(\begin{vmatrix}
@@ -1792,9 +1803,8 @@ z & r & az + br
     1) Lấy cột 1 cộng cột 2;
     2) Từ cột 3, ta tách làm hai ma trận có cùng cột 1 và 2;
     3) Lấy cột 2 cộng 2 lần cột 1;
-    4) Lấy cột 1 cộng cột 2 và cột 3.
-    
-    \textbf{Bài số 7.} Chứng minh rằng:
+    4) Lấy cột 1 cộng cột 2 và cột 3.\\
+\textbf{Bài số 7.} Chứng minh rằng:
     \[
     \begin{vmatrix}
     1 & a & a^2 \\
@@ -1803,9 +1813,8 @@ z & r & az + br
     \end{vmatrix} = (b - a)(c - a)(c - b)
     \]
     
-    \textit{Hướng dẫn:} Biến đổi sơ cấp hoặc dùng quy tắc 6 đường chéo.
-    
-    \textbf{Bài số 8.} Tìm \(x\) sao cho:
+    \textit{Hướng dẫn:} Biến đổi sơ cấp hoặc dùng quy tắc 6 đường chéo.\\
+\textbf{Bài số 8.} Tìm \(x\) sao cho:
     \[
     \begin{vmatrix}
     1 & x & x^2 & x^3 \\
@@ -1815,9 +1824,8 @@ z & r & az + br
     \end{vmatrix} = 0
     \]
     
-    \textit{Đáp số:} \(x = 2 \lor x = 3 \lor x = 4\).
-    
-    \textbf{Bài số 9.} Tính định thức cấp \(n\) sau:
+    \textit{Đáp số:} \(x = 2 \lor x = 3 \lor x = 4\).\\   
+\textbf{Bài số 9.} Tính định thức cấp \(n\) sau:
     1. \(\begin{vmatrix}
     1 & 2 & 3 & \cdots & n \\
     -1 & 0 & 0 & \cdots & 0 \\
@@ -1856,9 +1864,8 @@ z & r & az + br
     1) \(n!\);
     2) \((a + n - 1)(a - 1)^{n-1}\);
     3) ;
-    4) \(0\).
-    
-    \textbf{Bài số 10.} Cho hai ma trận: \( A = \begin{pmatrix}
+    4) \(0\).\\ 
+\textbf{Bài số 10.} Cho hai ma trận: \( A = \begin{pmatrix}
     2 & 1 \\
     1 & 2
     \end{pmatrix} \) và \( B = \begin{pmatrix}
@@ -1867,7 +1874,10 @@ z & r & az + br
     \end{pmatrix} \).
     
     Tính \((B^{-1}AB)^n, n \in \mathbb{N}\) rồi suy ra \(A^n\).
-    \textit{Đáp số:} \((B^{-1}AB)^n = \begin{pmatrix}
+
+    \textit{Đáp số:}
+    
+    \((B^{-1}AB)^n = \begin{pmatrix}
         3^n & 0 \\
         0 & 1
         \end{pmatrix}; \quad A^n = \frac{1}{2} \begin{pmatrix}
@@ -1875,16 +1885,16 @@ z & r & az + br
         3^n - 1 & 3^n + 1
         \end{pmatrix}\).
         
-        \textbf{Bài số 11.} Cho ma trận \(A = \begin{pmatrix}
+        
+\textbf{Bài số 11.} Cho ma trận \(A = \begin{pmatrix}
         5 & 4 \\
         -4 & -3
         \end{pmatrix} \in M_2 \).
         
         Chứng minh rằng: \(A^2 - 2A + I_2 = 0\). Suy ra \(A^{-1}\).
         
-        \textit{Hướng dẫn:} Tính trực tiếp ta có điều phải chứng minh rồi suy ra \(A^{-1}\).
-        
-        \textbf{Bài số 12.} Tìm \(a\) để ma trận sau khả nghịch và tính \(A^{-1}\):
+        \textit{Hướng dẫn:} Tính trực tiếp ta có điều phải chứng minh rồi suy ra \(A^{-1}\).\\
+\textbf{Bài số 12.} Tìm \(a\) để ma trận sau khả nghịch và tính \(A^{-1}\):
         \[
         A = \begin{pmatrix}
         1 & 1 & 0 \\
@@ -1897,9 +1907,9 @@ z & r & az + br
         a - 2 & -1 & 1 \\
         -1 & 1 & -1 \\
         2 & -2 & a - 2
-        \end{pmatrix}\).
+        \end{pmatrix}\).\\     
+\textbf{Bài số 13.} Tìm \(m\) sao cho các ma trận sau khả nghịch:
         
-        \textbf{Bài số 13.} Tìm \(m\) sao cho các ma trận sau khả nghịch:
         1.
         \[
         \begin{pmatrix}
@@ -1919,9 +1929,8 @@ z & r & az + br
         \end{pmatrix}
         \]
         
-        \textit{Đáp số:} 1) \(m \neq 1 \land m \neq 3\); 2) \(m \neq 1 \land m \neq -3\).
-        
-        \textbf{Bài số 14.} Tìm \(x\) sao cho:
+        \textit{Đáp số:} 1) \(m \neq 1 \land m \neq 3\); 2) \(m \neq 1 \land m \neq -3\).\\
+\textbf{Bài số 14.} Tìm \(x\) sao cho:
         \[
         \begin{vmatrix}
         1 & x & x - 1 & x + 2 \\
@@ -1931,9 +1940,8 @@ z & r & az + br
         \end{vmatrix} = 0
         \]
         
-        \textit{Đáp số:} \(x = 0 \lor x = 1 \lor x = -1\).
-        
-        \textbf{Bài số 15.} Tìm ma trận nghịch đảo của ma trận sau (nếu có):
+        \textit{Đáp số:} \(x = 0 \lor x = 1 \lor x = -1\).\\ 
+\textbf{Bài số 15.} Tìm ma trận nghịch đảo của ma trận sau (nếu có):
         
         1.
         \(
@@ -2007,9 +2015,8 @@ z & r & az + br
         \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
         \frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4}
         \end{pmatrix}\).\\
-        \vspace*{0.5cm}
-
-        \textbf{Bài số 16.} Cho ma trận:
+        \vspace*{0.5cm}\\
+\textbf{Bài số 16.} Cho ma trận:
         \[
         A = \begin{pmatrix}
         0.4 & 0.2 & 0.1 \\
@@ -2027,9 +2034,8 @@ z & r & az + br
         0.75 & 2 & 1.25 \\
         0.8 & 0.8 & 2
         \end{pmatrix}
-        \]
-        
-        \textbf{Bài số 17.} Cho các ma trận:
+        \]\\
+\textbf{Bài số 17.} Cho các ma trận:
         \[
         A = \begin{pmatrix}
         -3 & 4 & 6 \\
@@ -2049,9 +2055,8 @@ z & r & az + br
         7 & 4 & 11 \\
         2 & 2 & 3
         \end{pmatrix}
-        \]
-        
-        \textbf{Bài số 18.} Giải phương trình: \(AX = B\), với:
+        \]\\
+\textbf{Bài số 18.} Giải phương trình: \(AX = B\), với:
         \[
 A = \begin{pmatrix}
 3 & -4 & 5 \\
@@ -2072,9 +2077,8 @@ X = \begin{pmatrix}
 -124 & 14 \\
 20 & -3
 \end{pmatrix}
-\]
-
-        \textbf{Bài số 19.} Tìm \(A\) sao cho \(AB = BA\), với
+\]\\
+\textbf{Bài số 19.} Tìm \(A\) sao cho \(AB = BA\), với
         \[
         A = \begin{pmatrix}
         3 & -4 & 5 \\
@@ -2094,9 +2098,8 @@ X = \begin{pmatrix}
         -124 & 14 \\
         20 & -3
         \end{pmatrix}
-        \]
-        
-        \textbf{Bài số 20.} Tính hạng của các ma trận sau:
+        \]\\
+\textbf{Bài số 20.} Tính hạng của các ma trận sau:
         
         1.
         \(
@@ -2149,9 +2152,8 @@ X = \begin{pmatrix}
         1) 3;
         2) 2;
         3) 2;
-        4) 4.
-        
-        \textbf{Bài số 21.} Tùy theo \(m\), tìm hạng của các ma trận sau:
+        4) 4.\\
+\textbf{Bài số 21.} Tùy theo \(m\), tìm hạng của các ma trận sau:
         
         1.
         \(
@@ -2204,9 +2206,8 @@ X = \begin{pmatrix}
         1) \(m = 0\), rank = 0; \(m \neq 0\), rank = 2;
         2) \(m = 0\), rank = 0; \(m \neq 0\), rank = 3;
         3) \(m = 7\), rank = 2; \(m \neq 7\), rank = 3;
-        4) \(m = 1\), rank = 3; \(m \neq 1\), rank = 4.
-        
-        \textbf{Bài số 22*.} Tính \(A^n\), biết rằng:
+        4) \(m = 1\), rank = 3; \(m \neq 1\), rank = 4.\\
+\textbf{Bài số 22*.} Tính \(A^n\), biết rằng:
         
         1.
         \(
@@ -2260,9 +2261,8 @@ X = \begin{pmatrix}
         4) \(A^n = \begin{pmatrix}
         \cos \frac{n\pi}{6} + \sin \frac{n\pi}{6} & -2\sin \frac{n\pi}{6} \\
         \sin \frac{n\pi}{6} & \cos \frac{n\pi}{6} - \sin \frac{n\pi}{6}
-        \end{pmatrix}\).
-        
-        \textbf{Bài số 23*.} Tìm \(a, b\) sao cho:
+        \end{pmatrix}\).\\
+\textbf{Bài số 23*.} Tìm \(a, b\) sao cho:
         \[
         \begin{pmatrix}
         a & -b \\
@@ -2276,9 +2276,8 @@ X = \begin{pmatrix}
         \textit{Đáp số:}
         \[
         a = \frac{\sqrt{2}}{4} \cos \left( \frac{\pi}{24} + k \frac{\pi}{2} \right), \quad b = \frac{\sqrt{2}}{4} \sin \left( \frac{\pi}{24} + k \frac{\pi}{2} \right).
-        \]
-        
-        \textbf{Bài số 24*.} Cho hai ma trận:
+        \]\\
+\textbf{Bài số 24*.} Cho hai ma trận:
         \[
         A = \begin{pmatrix}
         2 & 0 & 0 \\
@@ -2312,12 +2311,25 @@ X = \begin{pmatrix}
         0 & 0 & 0 \\
         0 & 0 & 1
         \end{pmatrix}
-        \]
-        
-        \textbf{Bài số 25*.} Cho \(A, B, C\) là ba ma trận vuông cấp 2 với các phần tử của ma trận là số thực. Chứng minh rằng:
+        \]\\
+\textbf{Bài số 25*.} Cho \(A, B, C\) là ba ma trận vuông cấp 2 với các phần tử của ma trận là số thực. Chứng minh rằng:
         \[
         (AB - BA)^2C - C(AB - BA)^2 = 0.
         \]
         
         \textit{Hướng dẫn:} Đặt \(A, B, C\) rồi đi tính trực tiếp ta có điều phải chứng minh.
-    
+\newpage
+\begin{thebibliography}{9}
+    \bibitem{toancaocap}
+    Nguyễn Huy Hoàng, Nguyễn Trung Đông,
+    {\em Giáo Trình Toán Cao Cấp}
+    % Bộ Giáo Dục và Đào Tạo, 
+    % Tái bản lần thứ mười một, 2024.
+    % \bibitem{ttdeo}
+    % Trịnh Thanh Đèo,
+    % {\em Soạn thảo và chế bản tài liệu toán học với \LaTeX2$\varepsilon$},
+    % NXB Đại~học Quốc gia TP.HCM, 2006.
+    % \bibitem{johson}
+    % Johnson Richard, Wichern Dean,
+    % {\em Applied Multivariate Statistical Analysis}, tái bản lần thứ tư, Springer-Verlag, 2013.
+\end{thebibliography}
