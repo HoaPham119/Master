@@ -1,0 +1,292 @@
+---
+title: "Bài tập 3 - Mô hình hóa thống kê"
+author: "Nhóm 10: Trịnh Quang Trí - 23C23011, Phạm Thị Hòa - 23C23007"
+output: pdf_document
+header-includes:
+- \usepackage[utf8]{vietnam}
+---
+
+# EDA
+## Đọc dữ liệu
+```{r, warning = FALSE}
+library(readxl)
+library(dplyr)
+options(repr.plot.width = 20, repr.plot.height =10)
+boston <- read_xlsx('Boston.xlsx')
+boston
+```
+Bộ dữ liệu Nhà ở Boston là kết quả từ thông tin được thu thập bởi Dịch vụ Thống kê Dân số Hoa Kỳ về nhà ở trong khu vực của Boston, Massachusetts. Mô tả các cột trong bộ dữ liệu như sau:
+
+- crim : Tỉ lệ tội phạm trên đầu người theo thành phố
+- zn: Tỉ lệ đất dành cho mục đích ở, được quy hoạch cho các lô đất trên 25.000 feet vuông
+- indus: Tỉ lệ diện tích doanh nghiệp không bán lẻ trên mỗi thị trấn
+- chas: Biến giả Charles River (1: nếu khu vực giáp sông; 0: nếu không)
+- nox: Nồng độ oxit nitric (phần trăm trên 10 triệu)
+- rm: Số phòng trung bình trên mỗi căn nhà ở
+- age: Tỉ lệ các đơn vị đã được sở hữu và xây dựng trước năm 1940
+- rad: Khoảng cách có trọng số đến năm trung tâm việc làm ở Boston
+- tax: Tỷ lệ thuế tài sản trị giá đầy đủ mỗi 10.000 đô la
+- ptratio: Tỷ lệ học sinh - giáo viên theo thị trấn
+- black: Tỉ lệ người da đen theo thị trấn
+- lstat: Tỉ lệ phần trăm của dân số có địa vị xã hội thấp
+- medv: Giá trị trung bình của các căn nhà đã được sở hữu, tính bằng nghìn đô la
+
+## Kiểm tra kiểu dữ liệu
+```{r}
+str(boston)
+```
+Hầu hết các biến đều có kiểu dữ liệu dạng số, nên ta không cần thực hiện bước encode dữ liệu.
+
+## Các thông số thống kê cơ bản
+```{r}
+summary(boston)
+```
+
+
+## Kiểm tra số lượng các giá trị duy nhất mỗi biến
+```{r}
+sapply(boston, function(x) length(unique(x)))
+```
+Ta thấy, biến *chas* là biến định tính duy nhất trong bảng dữ liệu (ta không sử dụng biến này trong các phân tích của biến định lượng). Tuy biến *zn*, *rad* và *ptratio* không có nhiều giá trị duy nhất nhưng vẫn là các biến định lượng với phần lớn giá trị là số rời rạc (ta sẽ không xử lí ngoại lai các biến này).
+
+```{r}
+# Loại bỏ biến chas ra khỏi bộ dữ liệu 
+boston <- boston[,-4]
+```
+
+## Kiểm tra dữ liệu khuyết
+```{r}
+colSums(is.na(boston))
+```
+Không có quan trắc nào bị khuyết thông tin ở các biến
+
+## Vẽ biểu đồ scatter matrix để kiểm tra mối quan hệ giữa các biến
+```{r}
+library(psych)
+library(e1071)
+pairs.panels(boston)
+```
+
+- Dường như có một mối tương quan khá cao giữa hai biến *rad*, *tax* (> 90%) --> Có khả năng hai biến này phản ánh chung một khía cạnh ảnh hưởng đến giá nhà, nên khi xây dựng mô hình với đồng thời hai biến này có thể gây ra hiện tượng đa cộng tuyến.
+
+- Biến phụ thuộc *medv* có quan hệ tuyến tính khá tốt với hai biến *lstat* và *rm*.
+
+## Vẽ histogram của các biến
+```{r}
+par(mfrow = c(3, 5))
+for (i in 1:ncol(boston)) {
+  hist(boston[[i]], main = names(boston)[i], col = "skyblue", xlab = names(boston)[i])
+}
+```
+
+
+
+## Kiểm tra giá trị ngoại lai
+```{r}
+# Kiểm tra bằng biểu đồ boxplot
+boxplot(boston[, -4])
+```
+Ta thấy có sự xuất hiện của giá trị ngoại lai trên các biến (kể cả biến phụ thuộc *medv*), nên đầu tiên ta sẽ thực hiện phân tích các giá trị ngoại lai của biến dự báo *medv*. 
+
+
+```{r}
+# Tách dữ liệu với giá trị medv ngoại lai
+boston1 <- boston[boston$medv > (quantile(boston$medv, 0.75) + 1.5*(quantile(boston$medv, 0.75) - quantile(boston$medv, 0.25))), ]
+```
+
+```{r, warning= FALSE}
+# Vẽ boxplot cho so sánh giá trị outlier và tất cả giá trị của biến phụ thuộc
+d <- rbind(cbind(stack(boston), group='Ban đầu'), cbind(stack(boston1), group='Ngoại lai'))
+library(ggplot2)
+ggplot(d, aes(group, values)) +
+  geom_boxplot() +
+  facet_wrap(~ind, scales='free_y')
+```
+
+Từ các biểu đồ boxplot trên, ta có thể thấy giá trị biến *mdev* cao hơn hẳn các giá trị còn lại không phải bởi vì bất kì sự phân bố bất thường của dữ liệu ở biến nào cả. Nên ta sẽ không tách các giá trị này ra để xây dựng một mô hình riêng biệt.
+
+
+```{r}
+# Tính tỷ lệ giá trị outlier trên các biến định lượng liên tục
+for (i in c(1, 3, 4, 5, 6, 7, 9, 10, 12, 13)) {
+    Q1 <- quantile(boston[[i]], 0.25)
+    Q3 <- quantile(boston[[i]], 0.75)
+    IQR <- Q3 - Q1
+    outliers <- boston[boston[[i]] < (Q1 - 1.5 * IQR) | boston[[i]] > (Q3 + 1.5 * IQR), ]
+    n_out <- nrow(outliers)
+    print(paste("Tỷ lệ giá trị outlier của biến", colnames(boston[, i]), ": ", round(n_out*100/nrow(boston), 2), "%"))
+}
+```
+Giá trị ngoại lai trên các biến chiếm tỷ lệ tương đối cao, vì vậy ta không nên xử lý bằng cách loại bỏ các giá trị này trên bộ dữ liệu $\rightarrow$ Xử lý bằng cách đưa các giá trị ngoại lai về giá trị ngưỡng (Q1 - 1.5xIQR) và (Q3 + 1.5xIQR)
+
+
+```{r}
+# Xử lý các outlier bằng cách đưa về giá trị ngưỡng (Q1 - 1.5*IQR) và (Q3 + 1.5*IQR)
+for (i in c(1, 3, 4, 5, 6, 7, 9, 10, 12, 13)){
+  Q1 <- quantile(boston[[i]], 0.25)
+  Q3 <- quantile(boston[[i]], 0.75)
+  IQR <- Q3 - Q1
+  low_out <- which(boston[[i]] < Q1 - 1.5*IQR)
+  up_out <- which(boston[[i]] > Q3 + 1.5*IQR)
+  boston[low_out, i] <- Q1 - 1.5*IQR
+  boston[up_out, i] <- Q3 + 1.5*IQR
+}
+```
+
+
+```{r}
+# Kiểm tra lại bằng biểu đồ boxplot
+boxplot(boston[, c(1, 3, 4, 5, 6, 7, 9, 10, 12, 13)])
+```
+
+
+```{r}
+data <- scale(boston[, -13], center = TRUE, scale = TRUE)
+```
+
+Tiến hành chuẩn hóa dữ liệu để tránh hiện tượng bias do chệnh lệch phương sai giữa các biến trong quá trình xây dựng mô hình hồi quy.
+
+# Mô hình hồi quy PCR
+
+```{r}
+# PCA
+pcaBoston <- princomp(data, fix_sign = TRUE)
+summary(pcaBoston)
+```
+Phân tích thành phần chính trên dữ liệu chuẩn hóa với 12 biến. Kết quả cho thấy:
+Từ thành phần chính thứ 5 trở đi có độ biến thiên phương sai không cao (< 5%), nên các thành phần chính từ 6 trở lên không giải thích được nhiều thông tin của dữ liệu. Vì vậy, ta sẽ cân nhắc chỉ giữ lại 5 thành phần chính đầu tiên.
+```{r}
+# Biểu đồ scree-plot
+plot(pcaBoston, type = "l")
+```
+Đồ thị scree-plot cho thấy sự giảm phương sai thay đổi không nhiều kể từ thành phần chính thử 2 trở về sau.
+```{r}
+# Trọng số của thành phần chính với các biến ban đầu
+pcaBoston$loadings
+```
+Với các kết quả trên, ta sẽ chỉ giữ lại 5 thành phần chính đầu tiên:
+
+- Thành phần chính thứ nhất:
+
+  Có quan hệ thuận với tỷ lệ tội phạm, tỉ lệ khu công nghiệp, nồng độ oxit nitric, tỉ lệ căn hộ cũ, thuế và chỉ số tiện ích đường cao tốc.
+  
+  Và có quan hệ nghịch với khoảng cách đến trung tâm làm việc.
+  
+$\rightarrow$ Thành phần chính này có thể giải thích cho chất lượng cuộc sống và công việc của người dân.
+
+- Thành phần chính thứ hai:
+
+  Có quan hệ thuận với tỷ lệ đất trống, chỉ số tiện ích đường cao tốc, tỉ lệ tội phạm, và thuế
+  
+  Đồng thời có mối quan hệ nghịch với tỉ lệ đa dạng sắc tộc.
+  
+$\rightarrow$ Thành phần chính này mang ý nghĩa về tiềm năng phát triển của khu vực.
+
+- Thành phần chính thứ ba:
+
+  Có mối quan hệ thuận lớn với số phòng trung bình và quan hệ nghịch với tỉ lệ giáo viên/học sinh.
+  
+$\rightarrow$ Cơ sở giáo dục nôi/ngoại trú có thể là chủ đề mà thành phần chính thứ ba hướng đến
+
+- Thành phần chính thứ tư:
+
+  Quan hệ thuận với tỷ lệ học sinh-giáo viên, tỉ lệ người da đen và số phòng trung bình
+  
+  Quan hệ nghịch với tỉ lệ dân số có địa vị thấp và tỉ lệ đất trống
+  
+$\rightarrow$ Thành phần này có thể mô tả được khả năng tham gia hệ thống giáo dục của người da màu.
+
+- Thành phần chính thứ năm:
+
+ Có mối quan hệ thuận rất cao với tỷ lệ người da màu, nên thành phần chính thứ năm có thể cũng là đại diên cho chính biến này.
+
+
+```{r}
+# Tạo bộ dữ liệu với các thành phần chính
+BostonPCA <- data.frame("medv" = boston$medv, pcaBoston$scores)
+```
+
+```{r, warning=FALSE}
+# Chia dữ liệu
+library(caret)
+set.seed(18)
+training.samples <- createDataPartition(y = BostonPCA$medv, p = 0.8, list = FALSE)
+train.data  <- BostonPCA[training.samples, ]
+
+test.data <- BostonPCA[-training.samples, ]
+dim(train.data)
+dim(test.data)
+```
+
+Ta tiến hành chia dữ liệu thành tập train và tập test, nhằm chỉ xử lý dữ liệu trên tập train để có thể đảm bảo ta xây dựng được mô hình hồi quy tốt nhất từ tập train, đồng thời vẫn có thể giữ được sự phản ánh dữ liệu thực tế của tập test.
+
+## Xây dựng mô hình PCR
+```{r}
+# Mô hình với 5 thành phần chính đầu tiên
+modPCA5 <- lm(medv ~ Comp.1 + Comp.2 + Comp.3 + Comp.4 + Comp.5, data = train.data) 
+summary(modPCA5)
+```
+Xây dựng mô hình hồi quy với 5 thành phần chính đâu tiên, kết quả cho thấy:
+
+  Thành phần chính thứ 5 vẫn không có nhiều ý nghĩa trong mô hình
+  
+  --> Thử sử dụng phương pháp step-wise dựa trên chỉ số BIC để chọn được mô hình rút gọn hơn.
+```{r}
+# Mô hình rút gọn
+modPCABIC <- MASS::stepAIC(modPCA5, k = 2 * log(nrow(train.data)), trace = 0) 
+summary(modPCABIC)
+```
+Sau khi sử dụng step-wise dựa trên chỉ số BIC để chọn mô hình, ta được mô hình với 3 thành phần chính: 1, 3 và 4. Ta có nhận xét mô hình như sau:
+
+- Cả 3 thành phần chính đều có ý nghĩa trong mô hình hồi quy.
+
+## Kiểm định Fisher từng phần
+```{r}
+# So sánh hai mô hình
+anova_result <- anova(modPCABIC, modPCA5)
+print(anova_result)
+```
+Kết quả kiểm định cho thấy,
+p-value = 0.0079 < 0.05, có nghĩa mô hình với 5 thành phần chính vẫn giải thích tốt hơn cho biến phụ thuộc *mdev*. Vậy ta sẽ giữ mô hình này để tiếp tục đánh giá.
+
+## Dự báo và đánh giá mô hình
+```{r}
+# Predictions
+pred <- predict(modPCA5, test.data)
+rmse <- sqrt(mean((test.data$medv - pred)^2))
+cat("RMSE: ", rmse, "\n")
+(summary(boston[, 13]))
+```
+So giá trị RMSE với phạm vi phân bố của biến phụ thuộc *medv* ta thấy. RMSE = 3.713 là tương đối ổn, khi so với khoảng giá trị từ tứ phân vị thức nhất và thứ ba (17.03; 25) $\rightarrow$ Mô hình dự báo tương đối tốt.
+
+## Kiểm tra các giả định cho mô hình hồi quy
+```{r, warning = FALSE}
+library(lmtest)
+library(car)
+# Kiểm tra các giả định của mô hình hồi quy tuyến tính
+
+# 1. Phương sai đồng nhất (Homoscedasticity)
+par(mfrow = c(1, 1))
+plot(modPCA5$fitted.values, modPCA5$residuals)
+abline(h = 0, col = "red")
+title("Residuals vs Fitted")
+```
+Đồ thị scatter-plot cho thấy, giá trị các phần dư phân bố xung quanh điểm 0. Tuy nhiên, độ rộng của phân bố là khác nhau $\rightarrow$ Phương sai phần dư không đồng nhất.
+```{r}
+# 2. Độ chuẩn của phần dư (Normality of residuals)
+qqnorm(modPCA5$residuals)
+qqline(modPCA5$residuals, col = "red")
+```
+Đồ thị QQ-plot biểu thị, ở hai đầu của giá trị phần dư có xu hướng lệch khỏi đường thằng tham chiếu $\rightarrow$ Phần dư không tuân theo phân phối chuẩn
+```{r}
+# 3. Độc lập của phần dư (Independence of residuals)
+dwtest(modPCA5)
+```
+Kết quả kiểm định Durbin-Watson thu được p-value = $2 \times 10^{-16} < 0.05$, nên giả định phần dư độc lập là không thỏa 
+```{r}
+# 4. Tính tuyến tính (Linearity)
+residualPlots(modPCA5)# Kiểm tra các giả định của mô hình hồi quy tuyến tính
+```
+Kết quả thống kê cho thấy, p-value của thành phần chính thứ 1, 2, 4 và 5 đều lớn hơn 0.05 $\rightarrow$ 4 thành phần chính đều có quan hệ tuyến tính với biến phụ thuộc *medv*. Hơn nữa, thành phần chính thứ 3 cho giá trị thống kê p-value = 0.019, vẫn có mối quan hệ tuyến tính với *medv* nếu ta chọn mức ý nghĩa 1%.(Các kết quả được minh họa rõ ràng trên các đồ thị)
+
+\textbf{Mô hình hồi quy chưa thỏa được các giả định, chính vì vậy mô hình này chưa hợp lệ và các ước lượng từ mô hình là không đáng tin cậy}

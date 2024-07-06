@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath}
+
+\title{QUÁ TRÌNH NGẪU NHIÊN}
+\author{PHẠM THỊ HOÀ}
+
+\begin{document}
+
+\maketitle
+
+\section{Thế nào là quỹ đạo mẫu (sample path)?}
+Với mỗi giá trị cụ thể $\omega \in \Omega$ (không gian mẫu), đồ thị của quá trình ngẫu nhiên $X(t, \omega)$ theo biến $t$ gọi là quỹ đạo mẫu.\\
+$\rightarrow$ Quỹ đạo mẫu là sự thể hiện của quá trình ngẫu nhiên $X(t)$.
+
+\section{Định nghĩa quá trình dừng ngặt}
+Quá trình ngẫu nhiên $\{X(t), t \in T\}$ được gọi là dừng ngặt nếu với mọi $n$ và mọi tập thời gian $\{t_i \in T, i = 1, 2, \ldots, n\}$, ta có
+\[
+F_X(x_1, \ldots, x_n; t_1, \ldots, t_n) = F_X(x_1, \ldots, x_n; t_1 + \tau, \ldots, t_n + \tau)
+\]
+với mọi $\tau$.\\
+$\rightarrow$ Hàm phân phối đồng thời không thay đổi khi dịch chuyển một đoạn $\tau$.\\
+$\rightarrow$ Tất cả mọi phân phối các bậc đều không thay đổi theo thời gian. Hàm phân phối không phụ thuộc vào thời gian: $F_X(x, t) = F_X(x)$.
+
+\section{Định nghĩa quá trình dừng bậc k và quá trình dừng yếu}
+Quá trình ngẫu nhiên $\{X(t), t \in T\}$ được gọi là dừng bậc $k$ nếu với mọi $n \leq k$ và mọi tập thời gian $\{t_i \in T, i = 1, 2, \ldots, n\}$, ta có
+\[
+F_X(x_1, \ldots, x_n; t_1, \ldots, t_n) = F_X(x_1, \ldots, x_n; t_1 + \tau, \ldots, t_n + \tau)
+\]
+với mọi $\tau$.\\
+$\rightarrow$ Dừng bậc $k$ là khi điều kiện dừng ngặt chỉ đúng với $n \leq k$.\\
+Quá trình ngẫu nhiên $\{X(t), t \in T\}$ được gọi là dừng yếu nếu với mọi $t_1, t_2 \in T$, ta có
+\[
+F_X(x_1; t_1) = F_X(x_1; t_1 + \tau)
+\]
+\[
+F_X(x_1, x_2; t_1, t_2) = F_X(x_1, x_2; t_1 + \tau, t_2 + \tau)
+\]
+với mọi $\tau$.\\
+$\rightarrow$ Dừng yếu là dừng bậc 2 (điều kiện dừng ngặt chỉ đúng với $n \leq 2$).
+
+\section{Định nghĩa quá trình có số gia độc lập}
+Quá trình ngẫu nhiên $\{X(t), t \geq 0\}$ được gọi là có số gia độc lập nếu với mọi $0 < t_1 \leq t_2 \leq \ldots \leq t_n$ ta luôn có
+\[
+X(0), X(t_1) - X(0), X(t_2) - X(t_1), \ldots, X(t_n) - X(t_{n-1})
+\]
+là độc lập.
+
+\section{Định nghĩa quá trình có số gia dừng}
+Quá trình ngẫu nhiên $\{X(t), t \geq 0\}$ được gọi là có số gia dừng nếu với mọi $s, t$ thoả $s < t$ và với mọi $h \geq 0$, ta có
+\[
+X(t) - X(s) \sim X(t + h) - X(s + h)
+\]
+$\rightarrow$ Phân phối của số gia không thay đổi khi dịch chuyển một đoạn thời gian $h$.
+
+\section{Nêu các định nghĩa quá trình Poisson và trình bày tính không nhớ}
+Có nhiều định nghĩa tương đương về quá trình Poisson.\\
+Định nghĩa 1: Quá trình đếm $\{N(t), t \geq 0\}$ được gọi là quá trình Poisson với tỉ lệ $\lambda$ nếu thời gian chờ $X_1, X_2, \ldots$ có cùng hàm phân phối mũ $(X_n \sim \text{exp}(\lambda))$
+\[
+P(X_n \leq x) = 1 - e^{-\lambda x}, \quad x \geq 0.
+\]
+$\rightarrow$ Định nghĩa thông qua thời gian chờ.\\
+Định nghĩa 2: Quá trình đếm $\{N(t), t \geq 0\}$ được gọi là quá trình Poisson với tỉ lệ $\lambda$ nếu
+\begin{enumerate}
+    \item $N(0) = 0$
+    \item $N(t)$ có số gia độc lập
+    \item Số lần xảy ra sự kiện trong cùng khoảng thời gian $t$ có phân phối Poisson với trung bình $\lambda t$, nghĩa là với mọi $s, t > 0$,
+    \[
+    P(N(t + s) - N(s) = n) = \frac{(\lambda t)^n e^{-\lambda t}}{n!}, \quad n = 0, 1, \ldots
+    \]
+    độc lập với $s$, hay $N(t + s) - N(s) \sim \text{Poisson}(\lambda t)$.
+\end{enumerate}
+$\rightarrow$ Định nghĩa trực tiếp.\\
+$\rightarrow$ Có gia số dừng (chỉ phụ thuộc vào khoảng cách).\\
+Định nghĩa 3: Quá trình đếm $\{N(t), t \geq 0\}$ được gọi là quá trình Poisson với tỉ lệ $\lambda$ nếu
+\begin{enumerate}
+    \item $N(0) = 0$
+    \item $N(t)$ có số gia dừng độc lập
+    \item $P[N(t + \Delta t) - N(t) = 1] = \lambda \Delta t + o(\Delta t)$
+    \item $P[N(t + \Delta t) - N(t) \geq 2] = o(\Delta t)$
+\end{enumerate}
+$\rightarrow$ Trong thời gian ngắn ($\Delta t$ bé), xác suất xảy ra 1 sự kiện là rất nhỏ, xác suất xảy ra 2 sự kiện là gần bằng 0.\\
+Tính không nhớ: Với mọi $t \geq 0$, biến ngẫu nhiên $\gamma_t$ (thời gian chờ kể từ thời điểm $t$ đến lần xảy ra tiếp theo) có phân phối mũ với trung bình $1/\lambda$. Tức là,
+\[
+P(\gamma_t \leq x) = 1 - e^{-\lambda x}, \quad x \geq 0
+\]
+độc lập với $t$, hay $\gamma_t \sim \text{exp}(\lambda)$.\\
+$\rightarrow$ Thời gian chờ $\gamma_t$ hay các $X_n$ đều có phân phối mũ giống nhau, tỉ lệ $\lambda$.
+
+\section{Định nghĩa xích Markov rời rạc. Có phải các xích Markov đều tồn tại xác suất dừng? Nói rõ điều kiện có xác suất dừng}
+Quá trình ngẫu nhiên $\{X_n, n = 0, 1, \ldots\}$ với không gian trạng thái $I$ được gọi là một xích Markov rời rạc nếu với mỗi $n = 0, 1, \ldots$
+\[
+P(X_{n+1} = i_{n+1} | X_0 = i_0, \ldots, X_n = i_n) = P(X_{n+1} = i_{n+1} | X_n = i_n)
+\]
+với mọi giá trị khả thi $i_0, \ldots, i_{n+1} \in I$.\\
+$\rightarrow$ Tính Markov: chỉ quan tâm đến thông tin/điều kiện gần nhất.\\
+Không phải lúc nào xích Markov cũng có xác suất dừng. Các điều kiện để có xác suất dừng:
+\begin{itemize}
+    \item Tối giản: mọi trạng thái đều liên thông với nhau
+    \item Ergodic: mọi trạng thái đều có tính lặp dương và không có chu kì
+    \begin{itemize}
+        \item Trạng thái $i$ được gọi là có tính lặp dương, nếu trung bình số bước để quay trở lại $i$ là hữu hạn $E[T_i | X_0 = i] < \infty$
+        \item không có chu kì, nếu ước số chung lớn nhất của tập số bước để lặp lại $i$ là 1 $GDC(\{n | p_{ii}^{(n)} > 0\}) = 1$
+    \end{itemize}
+\end{itemize}
+
+\section{Định nghĩa quá trình Markov liên tục. Có phải các quá trình Markov đều tồn tại xác suất dừng? Nói rõ điều kiện có xác suất dừng}
+Định nghĩa 1: Quá trình ngẫu nhiên thời gian liên tục $\{X(t), t \geq 0\}$ là một quá trình Markov liên tục nếu với mọi $s, t \geq 0$ và các số nguyên không âm $i, j, x(u), 0 \leq u < s$
+\[
+P[X(t + s) = j | X(s) = i, X(u) = x(u), 0 \leq u < s] = P[X(t + s) = j | X(s) = i]
+\]
+$\rightarrow$ Tính Markov: chỉ phụ thuộc vào hiện tại, độc lập với quá khứ.\\
+Định nghĩa 2: Quá trình ngẫu nhiên thời gian liên tục $\{X(t), t \geq 0\}$ là một quá trình Markov liên tục nếu nó có tính chất là mỗi khi đạt trạng thái $i$ thì
+\begin{enumerate}
+    \item thời gian chờ ($T_i$) trước khi chuyển sang trạng thái khác có phân phối mũ với trung bình là $1/v_i$ (tức là có tỉ lệ $v_i$)
+    \item khi rời khỏi trạng thái $i$, quá trình sẽ đạt trạng thái $j$ với xác suất $P_{ij}$ (xác suất chuyển một bước). Tất nhiên, $P_{ij}$ phải thoả $P_{ii} = 0$ và $\sum_j P_{ij} = 1$ với mọi $i$.
+\end{enumerate}
+Không phải lúc nào quá trình Markov cũng có xác suất dừng. Điều kiện để có xác suất dừng là điều kiện ergodic:
+\begin{enumerate}
+    \item Tính tối giản: mọi trạng thái đều liên thông với nhau
+    \item Tính lặp dương: trung bình thời gian để lặp lại một trạng thái là hữu hạn
+\end{enumerate}
+
+\section{Định nghĩa chuyển động Brown và Brown tiêu chuẩn. Nêu các tính chất mà em biết về chuyển động Brown}
+Định nghĩa: Quá trình ngẫu nhiên $\{X(t), t \geq 0\}$ được gọi là chuyển động Brown nếu
+\begin{enumerate}
+    \item $X(0) = 0$
+    \item $X(t)$ là hàm liên tục theo biến $t$ (quỹ đạo mẫu liên tục), nhưng không khả vi
+    \item $\{X(t), t \geq 0\}$ có số gia dừng độc lập
+    \item với mỗi $0 \leq s < t$, $X(t) - X(s)$ có phân phối chuẩn với kì vọng là 0 và phương sai là $\sigma^2 (t - s)$
+\end{enumerate}
+Nếu $\sigma = 1$ thì quá trình được gọi là chuyển động Brown tiêu chuẩn. Khi đó, $X(t) - X(s)$ có phân phối chuẩn với kì vọng là 0 và phương sai là $t - s$.\\
+Tính chất: Cho $X(t)$ là chuyển động Brown tiêu chuẩn. Khi đó
+\begin{enumerate}
+    \item $t > 0$, $X(t) \sim N(0, t)$
+    \item $s < t$, $X(t) - X(s) \sim N(0, t - s)$
+    \item $s < t$, $\{X(t) | X(s) = B\} \sim N(0, t - s)$
+    \item $s < t$, $\{X(s) | X(t) = B\} \sim N \left( \frac{s}{t} B, \frac{s}{t} (t - s) \right)$
+    \item $X(t)$ độc lập và dừng theo số gia
+    \item $X(t)$ liên tục, không khả vi
+    \item $X(t)$ là quá trình Gauss, tức là $(X(t_1), \ldots, X(t_n))$ có phân phối chuẩn nhiều chiều
+    \item $X(t) - X(s)$ độc lập với $\mathcal{F}_s = \sigma \{X(r), 0 \leq r \leq s\}$
+    \item $X(t)$ có tính Markov, tức là với $s < t$ ta có $E[X(t) | \mathcal{F}_s] = X(s)$
+    \item $X(t)$ là martingale đối với bộ lọc $\mathcal{F}_t$, tức là với $s < t$ ta có $E[X(t) | \mathcal{F}_s] = X(s)$
+\end{enumerate}
+
+\section{Định nghĩa kì vọng có điều kiện của một biến ngẫu nhiên đối với một biến cố, đối với một biến ngẫu nhiên bất kì, đối với một sigma trường}
+
+\section{Nêu một số tính chất của kì vọng có điều kiện mà em biết}
+
+\section{Martingale rời rạc: định nghĩa Martingale đối với bộ lọc cho trước, submartingale, supermartingale. Thế nào là thời điểm dừng? Trình bày định lý hội tụ Martingale Doob}
+
+\section{Martingale liên tục: định nghĩa Martingale đối với bộ lọc cho trước, submartingale, supermartingale. Trình bày định lý hội tụ Martingale}
+
+\end{document}
