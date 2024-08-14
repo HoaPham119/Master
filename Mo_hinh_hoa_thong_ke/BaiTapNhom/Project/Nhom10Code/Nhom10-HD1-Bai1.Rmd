@@ -1,0 +1,270 @@
+---
+title: "Hoạt động 1: Bài 1"
+output: pdf_document
+date: "2024-08-03"
+header-includes:
+- \usepackage[utf8]{vietnam}
+---
+
+
+```{r, include=FALSE}
+library(emmeans)
+library(rstatix)
+library(rstatix)
+library(MASS)
+library(lmtest)
+library(car)
+library(ggplot2)
+library(dplyr)
+```
+
+# Mô tả dữ liệu
+
+```{r}
+# Đọc dữ liệu
+data <- read.csv("Islander_data.csv")
+head(data, 20)
+```
+
+Dữ liệu trong tập tin "Islander-data.csv" chứa thông tin về một thử nghiệm về tác dụng phụ của các loại thuốc chống trầm cảm đối với trí nhớ của người tham gia thử nghiệm, được đánh giá thông qua thời gian hoàn thành một bài kiểm tra trí nhớ. Người tham gia thử nghiệm sẽ được sử dụng một trong ba loại thuốc khác nhau, với 3 hàm lượng khác nhau và sẽ tiếp xúc với các ký ức vui hoặc buồn trong vòng 10 phút trước khi tiến hành kiểm tra. Thời gian hoàn thành bài kiểm tra của người tham gia sẽ được ghi nhận trước và sau khi kết thúc thử nghiệm để đánh giá hiệu quả của từng loại thuốc cũng như hàm lượng thuốc khác nhau. (Những người này đều trên 25 tuổi nhằm đảm bảo thuỳ trán phát triển hoàn thiện, nơi đảm nhận chức năng nhận thức và gợi lại ký ức). Dữ liệu được thu thập bởi ông Almohalwas tại UCLA bao gồm 198 quan trắc với 9 biến sau:
+
+• first-name: tên của người tham gia thử nghiệm
+
+• last-name: họ của người tham gia thử nghiệm
+
+• Age: tuổi (năm) của người tham gia thử nghiệm
+
+• HappySadgroup: loại ký ức được tiếp xúc trước khi kiểm tra (H: vui, S: buồn)
+
+• Dosage: Mức độ hàm lượng thuốc sử dụng (1: thấp, 2: trung bình, 3: cao)
+
+• Drug: Loại thuốc sử dụng (A: , Alprazolam, T: Triazolam, S: Placebo (giả dược))
+
+• Mem-Score-Before: Thời gian (giây) cần để hoàn thành bài kiểm tra trước khi tiếp
+xúc với thuốc chữa trầm cảm
+
+• Mem-Score-After: Thời gian (giây) cần để hoàn thành bài kiểm tra sau khi tiếp xúc
+với thuốc chữa trầm cảm
+
+• Diff: Chênh lệch giữa thời gian (giây) hoàn thành bài kiểm tra trước và sau khi sử
+dụng thuốc.
+
+\textbf{Ta tiến hành phân tích ANOVA - k nhân tố nên sẽ không sử dụng hai biến tên first-name và last-name. Với thời gian làm bài kiểm tra, ta chỉ sử dụng biến Diff để phân tích cho tác dụng phụ của thuốc đối với khả năng ghi nhớ của bệnh nhân.}
+
+# EDA
+
+```{r}
+# Các thông số thống kê
+summary(data)
+
+# Kiểu dữ liệu của mỗi nhân tố
+str(data)
+
+# Kiểm tra giá trị duy nhất
+sapply(data, function(x) n_distinct(x))
+```
+
+
+```{r}
+# Kiểm tra dữ liệu khuyết
+colSums(is.na(data))
+```
+Không có bất kỳ quan trắc nào bị khuyết giá trị.
+
+Vì biến Dosage chỉ có 3 giá trị duy nhất, nên biến này là một biến định tính $\rightarrow$ Đổi kiểu dữ liệu thành kiểu character.
+
+```{r}
+# Đổi kiểu dữ liệu của biến Dosage
+data$Dosage <- as.character(data$Dosage)
+```
+
+Ngoài ra biến age có đến 45 giá trị duy nhất và khoảng giá trị nằm trong khoảng (24, 83), ta sẽ xử lí thành các nhóm tuổi sao cho số lượng quan trắc trong mỗi nhóm là gần bằng nhau, nhằm không làm ảnh hưởng đến kết quả phân tích ANOVA.
+
+```{r}
+# Tìm các khoảng độ tuổi sao cho phần tử của các nhóm là gần bằng nhau
+cut_number(data$age, 3)
+```
+
+
+```{r}
+## Tạo nhóm nhân tố cho biến age
+data[data$age >= 24 & data$age <= 33, "age_group"] <- "24-33"
+data[data$age > 33 & data$age <= 42, "age_group"] <- "33-42"
+data[data$age > 42, "age_group"] <- "> 42"
+```
+
+
+```{r}
+# Đồ thị boxplot cho biến phụ thuộc và các nhân tố
+idx <- c(4, 5, 6, 10)
+for (x in idx){
+  boxplot(data$Diff ~ data[, x], xlab = colnames(data)[x], ylab = "Diff")
+}
+```
+
+Sau khi trực quan hóa các nhân tố với biến phụ thuộc, ta chỉ thấy sự khác biệt xảy ra ở hai nhân tố *Dosage* và *Drug*. Còn đối với hai nhân tố *Happy_Sad_group* và *age_group* sự khác biệt là không rõ ràng.
+
+
+```{r}
+# Đồ thị boxplot cho biến phụ thuộc và hai nhân tố Dosage và Drug
+par(mfrow = c(1, 3))
+boxplot(Diff ~ Dosage, data[data$Drug == "A", ], xlab = 'A')
+
+boxplot(Diff ~ Dosage, data[data$Drug == "S", ], xlab = 'S')
+
+boxplot(Diff ~ Dosage, data[data$Drug == "T", ], xlab = 'T')
+
+```
+
+Sự khác biệt về chênh lệch thời gian hoàn thành bài kiểm tra trí nhớ chỉ có thể quan sát rõ ràng ở nhóm thuốc Alprazolam. Các khác biệt khi sử dụng hai phương thuốc còn lại chưa được thể hiện trên đồ thị trực quan.
+
+Thông qua các đồ thị boxplot, ta có thể quan sát thấy có sự hiện diện của giá trị ngoại lai ở các nhân tố. Để đảm bảo không làm mất cân bằng giữa các nhóm và làm mất thông tin dữ liệu ban đầu, ta sẽ biến đổi các giá trị cực lai về giá trị ngưỡng.
+
+```{r}
+# Xử lí giá trị cực ngoại lai  (đưa về giá trị ngưỡng)
+outlier_norm <- function(x){
+  qntile <- quantile(x, probs=c(.25, .75))
+  caps <- quantile(x, probs=c(.05, .95))
+  H <- 3.5 * IQR(x, na.rm = T)
+  x[x < (qntile[1] - H)] <- caps[1]
+  x[x > (qntile[2] + H)] <- caps[2]
+  return(x)
+}
+
+data$Diff <- outlier_norm(data$Diff)
+
+```
+
+# Xây dựng mô hình ANOVA - k nhân tố
+
+Sau khi thực hiện xử lí dữ liệu, ta có được 4 nhân tố có thế sử dụng để phân tích ANOVA: Happy_Sad_group, Dosage, Drug và age_group. Ta tiến hành xây dựng mô hình tương tác và mô hình cộng trên tất cả các nhân tố, từ đó sẽ chọn được mô hình phân tích phù hợp và có ý nghĩa thống kê nhất.
+
+```{r}
+# Mô hình tương tác
+int_aov <- aov(Diff ~ Happy_Sad_group * Dosage * Drug * age_group, data = data)
+
+summary(int_aov)
+```
+
+Kiểm định cho mỗi nhân tố:
+
+$H_0$: $\mu_1 = \mu_2 = \cdots = \mu_k$
+
+$H_1$: $\exists i,j$ sao cho $\mu_i \neq \mu_j$
+
+Kiểm định cho sự tương tác:
+
+$H_0$: Không có sự tương tác
+
+$H_1$: Có sự tương tác
+
+
+Kết quả phân tích phương sai (ANOVA) cho các biến và tương tác giữa chúng như sau:
+
+Dosage (Liều lượng): có sự khác biệt có ý nghĩa thống kê về liều lượng, với giá trị F là 8.605 và p-value (Pr(>F)) rất nhỏ, 0.000295, cho thấy sự khác biệt này là rất có ý nghĩa thống kê (p < 0.001). Điều này có nghĩa là liều lượng có ảnh hưởng đáng kể đến biến phụ thuộc.
+
+Drug (Loại thuốc): loại thuốc cũng có sự khác biệt có ý nghĩa thống kê, với giá trị F là 35.455 và p-value là $3.02 \times 10^{-13}$, cho thấy sự khác biệt này là cực kỳ có ý nghĩa thống kê (p < 0.001). Điều này cho thấy loại thuốc sử dụng có ảnh hưởng rõ rệt đến biến phụ thuộc.
+
+Dosage:Drug: tương tác giữa liều lượng và loại thuốc cũng có sự khác biệt có ý nghĩa thống kê, với giá trị F là 21.283 và p-value là $8.30 \times 10^{-14}$e-14, cho thấy sự khác biệt này là rất có ý nghĩa thống kê (p < 0.001). Điều này chỉ ra rằng hiệu quả của liều lượng phụ thuộc vào loại thuốc được sử dụng, hoặc ngược lại, nghĩa là có sự tương tác giữa hai biến này.
+
+Happy_Sad_group:Dosage:Drug và Happy_Sad_group:Drug:age_group: các tương tác này cũng cho thấy sự khác biệt có ý nghĩa thống kê (p < 0.05). Điều này nói rằng tác dụng phụ của loại thuốc có thể thay đổi theo nhóm tuổi và nhóm cảm xúc (Hạnh phúc/Buồn bã). Tuy nhiên, các tương tác này là tương tác lẫn nhau giữa 3 nhân tố, mà tương tác giữa hai nhân tố thành phần của nhóm cảm xúc và nhóm tuổi đều không có ý nghĩa thống kê $\rightarrow$ Có thể sự khác biệt này bị ảnh hưởng lớn bởi hai nhân tố còn lại hoặc chỉ là ngẫu nhiên. Nên ta có thể bỏ qua việc phân tích các tương tác giữa 3 nhóm này.
+
+Các yếu tố và tương tác còn lại đều có p-value (Pr(>F)) lớn hơn mức ý nghĩa 0.05, cho thấy rằng các yếu tố này không có ảnh hưởng đáng kể đến kết quả nghiên cứu.
+
+
+```{r}
+# Mô hình cộng
+add_aov <- aov(Diff ~ Happy_Sad_group + Dosage + Drug + age_group, data = data)
+summary(add_aov)
+```
+
+
+Kết quả của mô hình cộng cho thấy:
+
+Các nhân tố Dosage và Drug có p-value nhỏ hơn 0.05, cho thấy chúng có ảnh hưởng đáng kể đến biến phụ thuộc. Ngược lại, các yếu tố Happy_Sad_group và age_group có p-value lớn hơn 0.05, cho thấy chúng không có ảnh hưởng đáng kể.
+
+\textbf{Dựa trên các kết quả trên, mô hình ANOVA tốt nhất cho dữ liệu này, nên là mô hình chỉ gồm nhân tố Dosage và Drug vì chúng có sự khác biệt có ý nghĩa thống kê}
+
+
+```{r}
+# Mô hình phù hợp nhất
+final_aov <- aov(Diff ~ Dosage * Drug, data = data)
+summary(final_aov)
+```
+
+Kết quả cho thấy rằng cả hai nhân tố đều có ảnh hưởng đáng kể đến biến phụ thuộc. Điều này cho thấy rằng việc lựa chọn loại thuốc và liều lượng có thể tác động đáng kể đến tác dụng phụ của phương pháp điều trị. Đặc biệt, sự tương tác giữa liều lượng và loại thuốc cho thấy rằng tác dụng phụ gây ra của các mức liều lượng khác nhau có thể thay đổi tùy thuộc vào loại thuốc được sử dụng, hoặc ngược lại. Do đó, trong thực tế, cần xem xét cả hai yếu tố này cùng nhau để tối ưu hóa hiệu quả điều trị.
+
+# Kiểm tra các giả định cho mô hình ANOVA
+
+```{r}
+## Tính chuẩn của phần dư
+par(mfrow = c(1, 1))
+qqPlot(final_aov$residuals,
+       id = FALSE
+)
+
+shapiro_test(residuals(final_aov))
+```
+
+Kiểm định Shapiro-Wilk:
+
+$H_0$: Phần dư tuân theo phân phối chuẩn
+
+$H_1$:  Phần dư không tuân theo phân phối chuẩn
+
+Đồ thị Q-Q plot thể hiện giá trị của các phần dư phân bố xung quanh đường thẳng hồi quy, kết hợp với kết quả kiểm định Shapiro-Wilk với p-value = 0.096 > alpha = 0.05 $\rightarrow$ Không có đủ dữ kiện để bác bỏ $H_0$: Phần dư của mô hình tuân theo phân phối chuẩn.
+
+
+```{r}
+## Đồng nhất phương sai của phần dư
+plot(final_aov, which = 3)
+
+bptest(final_aov)
+```
+
+Kiểm định Breusch-Pagan:
+
+$H_0$: Phương sai của phần dư đồng nhất
+
+$H_1$: Phương sai của phần dư không đồng nhất
+
+
+Đồ thị trên thể hiện phương sai của phần dư ngẫu nhiên (không tạo hình hình dạng đặc biệt) và phân bố đều xung quanh giá trị 0. Kết hợp với kết quả kiểm định Breusch-Pagan cho thấy, phương sai của phần dư là đồng nhất.
+
+# So sánh trung bình giữa các cặp nhân tố
+
+```{r}
+# Post-hoc
+emm <- emmeans(final_aov, ~ Dosage * Drug)
+
+# Kiểm tra sự tương quan giữa 2 nhân tố
+pairwise_comparisons <- contrast(emm, method = "pairwise", adjust = "tukey")
+
+summary(pairwise_comparisons)
+```
+
+Kiểm định Post-hoc:
+
+$H_0$: $\mu_1 = \mu_2$
+
+$H_1$: $\mu_1 \neq \mu_2$
+
+- Với độ tin cậy 95%, kết quả cho thấy có sự khác biệt có ý nghĩa thống kê giữa nhóm thuốc A - liều lượng cao (3) với tất cả các cặp nhân tố khác, p-value $< 1 \times 10^{-4}$. Cụ thể, khi sử dụng thuốc Alprazolam với liều lượng cao để điều trị bệnh trầm cảm, sẽ làm ảnh hưởng mạnh hơn đến khả năng ghi nhớ thông tin của bệnh nhân so với tất cả các phương thuốc còn lại.
+
+- Ngoài ra, sử dụng Alprazolam với liều lượng trung bình (2) để điều trị bệnh nhân trầm cảm, tác dụng phụ cũng ảnh hưởng cao hơn khi so với khi sử dụng giả dược với liều lượng cao, p-value = 0.0056; và cũng ảnh hưởng cao hơn so với sử dụng Triazolam với liều lượng thấp (1) và cao (3) để điều trị cho bệnh nhân, p-value lần lượt là 0.0236 và 0.0129. Có thể tác dụng phụ khi sử dụng liều lượng trung bình (2) thuốc Triazolam cũng sẽ không cao hơn Alprazolam liều lượng thấp; nhưng do dữ liệu chưa tổng quát được thông tin của cặp nhân tố này.
+
+- Tác dụng phụ từ các cặp nhân tố chưa được đề cập, hầu hết đều không có sự khác biệt có ý nghĩa thống kê, p-value > 0.05.
+
+\textbf{Kết luận:} Bác sĩ tham gia điều trị bệnh trầm cảm cần quan tâm nhiều đến liều lượng sử dụng thuốc Alprazolam, và có thể là các loại thuốc cùng họ với Alprazolam; nếu hiệu quả điều trị của nó là không quá khác biệt so với thuốc Triazolam. Hơn nữa, bác sĩ có thể quan tâm hơn đến hướng nghiên cứu làm tăng hiệu quả cho thuốc Triazolam, để có thể tìm ra phương thuốc vừa có hiệu quả điều trị cao, vừa không gây tác dụng phụ nghiêm trọng đến bệnh nhân.
+
+# Đề xuất phương pháp
+
+Ta nhận thấy, giả định về sai số tuân theo phân phối chuẩn và đồng phương sai dễ dàng bị chi phối bởi các giá trị ngoại lai, nếu ta không thực hiện xử lí các giá trị này hợp lí thì giả định sẽ không thỏa; từ đó khiến cho kết quả phân tích ANOVA không còn đáng tin cậy. Do đó, phương pháp giúp làm giảm ảnh hưởng của giá trị ngoại lai hoặc các phương pháp phân tích không bị ảnh hưởng bởi các giả định, có thể sẽ giúp phân tích hiệu quả hơn, như là:
+
+- Biến đổi dữ liệu Box-Cox: phương pháp này giúp làm giảm ảnh hưởng của ngoại lai bằng cách thu hẹp khoảng giá trị và chuẩn hóa chúng.
+
+- Kiểm định Kruskal Wallis: là phương pháp phân tích dành riêng cho dữ liệu không tuân theo phân phối chuẩn.
+
+- Kỹ thuật bootstrap: là kỹ thuật giúp ước lượng phân phối mẫu và thực hiện các phân tích mà không quan tâm đến giả định chuẩn, thông qua việc lấy mẫu lặp lại nhiều lần.
+
+

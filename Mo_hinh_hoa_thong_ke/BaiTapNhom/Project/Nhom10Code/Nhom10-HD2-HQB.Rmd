@@ -1,0 +1,453 @@
+---
+title: "Hoạt động 2: Hồi quy bội"
+output: pdf_document
+date: "2024-08-07"
+header-includes:
+- \usepackage[utf8]{vietnam}
+---
+
+# Mô tả dữ liệu
+
+Một tạp chí về sức khỏe nổi tiếng khuyên độc giả nên đánh giá sức khỏe của mình nếu có thể; bằng cách ước tính tỷ lệ phần trăm mỡ trong cơ thể. Theo Bailey (1994), có thể ước tính tỷ lệ mỡ cơ thể từ số liệu như: tuổi và các đo lường một số bộ phận cụ thể trên cơ thể. Một vài bài báo khác cũng đề xuất công thức dự đoán tỷ lệ mỡ cơ thể, thông qua số đo chu vi một số bộ phận trên cơ thể như chu vi bụng, chu vi cổ tay,... (Behnke và Wilmore (1974), trang 66-67); (Wilmore (1976), trang 247); hoặc (Katch và McArdle (1977), trang 120-132).
+
+Tập dữ liệu này bao gồm biến độ tuổi và số đo chu vi các bộ phận trên cơ thể được chỉ định; tương ứng với giá trị tỷ trọng cơ thể được đo dưới nước (Density) và phần trăm mỡ trong cơ thể (BodyFat) của 251 người.
+
+Các biến trong tập dữ liệu:
+
+- Density: tỷ trọng cơ thể được đo dưới nước
+
+- BodyFat: phần trăm mỡ trong cơ thể
+
+- Age: tuổi
+
+- Weight: cân nặng (lbs)
+
+- Height: chiều cao (inches)
+
+- Neck: chu vi cổ (cm)
+
+- Chest: chu vi vòng ngực (cm)
+
+- Abdomen: chu vi vòng bụng (cm)
+
+- Hip: chu vi vòng eo (cm)
+
+- Thigh: chu vi đùi (cm)
+
+- Knee: chu vi đầu gối (cm)
+
+- Ankle: chu vi tại mắt cá chân (cm)
+
+- Biceps: chu vi bắp tay (cm)
+
+- Forearm: chu vi cánh tay trước (cm)
+
+- Wrist: chu vi cổ tay (cm)
+
+(Đường dẫn dữ liệu: https://www.kaggle.com/datasets/fedesoriano/body-fat-prediction-dataset/data)
+
+Tỷ lệ phần trăm mỡ trong cơ thể của một người có thể được ước tính khi tỷ trọng cơ thể trong nước được xác định. Siri (1956) giả định rằng cơ thể bao gồm hai thành phần - mô cơ thể không mỡ và mô mỡ. Đặt:
+
+\begin{align*}
+D & = \text{Tỷ trọng cơ thể (gm/cm}^3\text{)} \\
+A & = \text{tỷ lệ mô cơ thể không mỡ} \\
+B & = \text{tỷ lệ mô mỡ (A + B = 1)} \\
+a & = \text{mật độ của mô cơ thể không mỡ (gm/cm}^3\text{)} \\
+b & = \text{mật độ của mô mỡ (gm/cm}^3\text{)}
+\end{align*}
+
+chúng ta có:
+
+\[
+D = \frac{1}{\left(\frac{A}{a}\right) + \left(\frac{B}{b}\right)}
+\]
+
+Giải phương trình cho \( B \), chúng ta tìm được:
+
+\[
+B = \left(\frac{1}{D}\right) \left(\frac{ab}{a-b}\right) - \left(\frac{b}{a-b}\right)
+\]
+
+Sử dụng các ước tính \( a = 1.10 \, \text{gm/cm}^3 \) và \( b = 0.90 \, \text{gm/cm}^3 \) (Katch và McArdle (1977), trang 111) hoặc (Wilmore (1976), trang 123), chúng ta có được "Công thức Siri":
+
+\[
+\text{Tỷ lệ phần trăm mỡ cơ thể (tức là } 100 \times B) = \frac{495}{D} - 450
+\]
+
+
+```{r, include=FALSE}
+library(ggplot2)
+library(MASS)
+library(lattice)
+library(caret)
+library(car)
+library(rstatix)
+library(lmtest)
+library(dplyr)
+library(moments)
+library(readr)
+
+Libraries <- c("knitr", "readr")
+for (p in Libraries) { 
+    library(p, character.only = TRUE)
+}
+
+opts_chunk$set(fig.align='center',
+               external=TRUE,
+               echo=TRUE,
+               warning=FALSE,
+               fig.pos='H'
+               )
+```
+
+
+```{r}
+# Đọc dữ liệu
+body_fat <- read.csv("bodyfat.csv")
+head(body_fat, 20)
+```
+
+# EDA
+
+```{r}
+# Thông số thống kê
+summary(body_fat)
+```
+
+Từ các thông số thống kê trên các biến của bộ dữ liệu, ta phát hiện 2 điều bất thường:
+
+-   Giá trị nhỏ nhất của biến BodyFat là 0, điều này hoàn toàn không thể xảy ra ở người bình thường; nên ta tiến hành kiểm tra kết quả đo lường của biến Density và kết quả tính toán BodyFat theo công thức của Siri: $$\textit{Phần trăm lượng mỡ trong cơ thể (BodyFat)} = (495/\textit{Trọng lượng cơ thể được do lường dưới nước (Density)}) - 450 $$
+
+-   Chiều cao (Height) thấp nhất là 29.5 (inches) tương đương 74.93 (centimeters), là một chiều cao bất thường đối với người bình thường. Ta sẽ loại bỏ quan trắc này để tránh làm mô hình hồi quy bị thiên vị.
+
+```{r}
+# Tính lại BodyFat dựa trên giá trị của biến Density
+body_fat$cal_bodyfat <- (495/body_fat$Density) - 450
+# Tính sự khác biệt của giá trị BodyFat ban đầu và giá trị vừa tính được
+body_fat$diff <- body_fat$cal_bodyfat - body_fat$BodyFat
+# Thông số thống kê
+summary(body_fat$diff)
+# Trực quan hóa giá trị của biến diff
+boxplot(body_fat$diff)
+```
+
+Ta kỳ vọng giá trị BodyFat được tính toán lại (theo công thức Siri và giá trị Density có trong bộ dữ liệu) không quá khác biệt với giá trị ban đầu (giá trị trên cột BodyFat); hơn nữa, sự khác biệt hợp lí được chấp nhận chỉ từ việc làm tròn chữ số thập phân. Vì vậy, các giá trị của diff lớn hơn 1 và bé hơn -1 sẽ được cho là các quan trắc đã có sai sót trong đo lường và tính toán. Ta sẽ loại bỏ các quan trắc này trước khi đưa vào mô hình hồi quy.
+
+```{r}
+# Lấy chỉ số của các quan trắc có sai sót trong tính toán BodyFat
+idx_remove <- c(which(body_fat$diff < -1), which(body_fat$diff > 1))
+```
+
+```{r}
+# Xóa 2 cột vừa tạo để kiểm tra dữ liệu
+body_fat <- body_fat %>% select(-c('diff','cal_bodyfat'))
+```
+
+```{r}
+# Các quan trắc có giá trị Height nhỏ hơn giá trị ngoại lai dưới
+Q1 <- quantile(body_fat$Height, 0.25)
+Q3 <- quantile(body_fat$Height, 0.75)
+IQR <- Q3 - Q1
+low_out <- which(body_fat$Height < Q1 - 1.5*IQR)
+body_fat[low_out, ]
+```
+
+Chỉ có quan trắc chứa giá trị nhỏ nhất mà ta đã đề cập ở trên thuộc vùng giá trị ngoại lai.
+
+```{r}
+# Loại bỏ các quan trắc bất thường
+idx_remove <- c(idx_remove, low_out)
+body_fat <- body_fat[-idx_remove, ]
+```
+
+```{r}
+# Trực quan dữ liệu của toàn bộ tập dữ liệu
+boxplot(body_fat)
+```
+
+Vẫn còn sự hiện diện của giá trị ngoại lai trong tập dữ liệu, ta sẽ kiểm tra các quan trắc này.
+
+```{r}
+# Các giá trị cực ngoại lai
+idx <- c()
+for (i in 1:ncol(body_fat)){
+  Q1 <- quantile(body_fat[[i]], 0.25)
+  Q3 <- quantile(body_fat[[i]], 0.75)
+  IQR <- Q3 - Q1
+  up_out <- which(body_fat[[i]] > Q3 + 3.5*IQR)
+  low_out <- which(body_fat[[i]] < Q1 - 3.5*IQR)
+  idx <- c(idx, up_out, low_out)
+  idx <- unique(idx)
+}
+body_fat[idx,]
+```
+
+Các quan trắc chứa giá trị cực ngoại lai, nhưng giá trị trên các biến là hoàn toàn hợp lí (như quan trắc thứ 39, có thể người này bị béo phì nên hầu hết giá trị các biến đều rất cao). Ta sẽ giữ các quan trắc này nhằm giúp mô hình không bị hiện tượng thiên vị đối với tập dữ liệu huấn luyện.
+
+```{r}
+# Ma trận hệ số tương quan
+corrplot::corrplot(cor(body_fat), addCoef.col = "grey")
+```
+
+Các biến độc lập dường như có tương quan rất cao với nhau, việc này ảnh hưởng rất lớn đến mô hình hồi quy $\rightarrow$ Trong quá trình xây dựng mô hình cần thực hiện tính chỉ số VIF để loại bỏ biến có tương quan cao.
+
+```{r}
+par(mfrow = c(1, 1))
+# Trực quan phân phối trên các biến
+for (i in 1:ncol(body_fat)){
+  # Thước đo đơn vị
+  x2 <- seq(min(body_fat[, i]), max(body_fat[, i]), length = 40)
+
+  # Đường cong chuẩn
+  fun <- dnorm(x2, mean = mean(body_fat[, i]), sd = sd(body_fat[, i]))
+
+  # Histogram
+  hist(body_fat[, i], prob = TRUE, col = "white",
+       xlab = colnames(body_fat)[i], 
+       ylim = c(0, max(fun)),
+       main = "Histogram")
+  lines(x2, fun, col = 2, lwd = 2)
+}
+```
+
+Phân phối của các biến rất gần với phân phối chuẩn, tuy nhiên, vì ta quyết định giữ lại các giá trị cực ngoại lai nên hiện tượng lệch trái hoặc lệch phải xảy ra ở một số biến $\rightarrow$ Cần kiểm tra giá trị skewness và thực hiện biến đổi để hạn chế hiện tượng trên.
+
+```{r}
+# Tính giá trị skewness ở các biến
+for (i in 1:ncol(body_fat)){
+  message(colnames(body_fat)[i] , ", " , skewness(body_fat[, i]))
+}
+```
+Ta sử dụng ngưỡng (-2, 2) để đánh giá và đưa quyết định biến đổi giá trị các biến: 
+
+- Chỉ có ở biến Ankle có giá trị skewness = 2.28 (lệnh phải). Nên ta cần thực hiện biến đổi log cho biến này.
+
+```{r}
+# Biến đổi log cho biến Ankle
+body_fat$Ankle <- log(body_fat$Ankle)
+```
+
+
+```{r}
+# Kiểm tra lại giá trị skewness
+for (i in 1:ncol(body_fat)){
+  message(colnames(body_fat)[i] , ", " , skewness(body_fat[, i]))
+}
+```
+Không còn giá trị nào vượt ngưỡng (-2, 2)
+
+
+Tạo biến bmi từ Weight và Height, vì chỉ số bmi thường được sử dụng trong việc đánh giá các góc độ thuộc về sức khỏe con người.
+
+```{r}
+# Tạo biến bmi trong tập dữ liệu
+body_fat$bmi <- body_fat$Weight * 703 /(body_fat$Height^2)
+# Loại bỏ hai biến Height và Weight
+body_fat <- body_fat %>% select(-c('Weight','Height'))
+```
+
+Vì bmi được xây dựng từ hai biến đã qua bước làm sạch, nên có thể trực tiếp sử dụng để xây dựng mô hình.
+
+Quyết định xây dựng mô hình dự báo cho biến BodyFat (ta có thể chọn 1 trong 2 biến BodyFat hoặc Density để xây dựng mô hình, vì 2 biến này có hệ số tương quan tuyệt đối -1).
+
+```{r}
+# Loại bỏ biến Density
+body_fat <- body_fat %>% select(-c('Density'))
+```
+
+# Chia dữ liệu
+
+```{r}
+# Chia dữ liệu với tỷ lệ 80/20
+set.seed(18)
+training.samples <- createDataPartition(y = body_fat$BodyFat, p = 0.8, list = FALSE)
+train.data  <- body_fat[training.samples, ]
+test.data <- body_fat[-training.samples, ]
+dim(train.data)
+dim(test.data)
+```
+# Xây dựng mô hình
+
+```{r}
+# Xây dựng mô hình đầy đủ
+full_model <- lm(BodyFat ~ .,data = train.data)
+summary(full_model)
+```
+
+Ta bắt đầu với mô hình với đầy đủ, từ đây sẽ xử lí hiện tượng đa cộng tuyến để cuối cùng thu được mô hình tốt nhất.
+
+```{r}
+# Tính chỉ số VIF cho mô hình đầy đủ
+vif_values <- vif(full_model)
+vif_values
+```
+Chỉ số VIF của biến Abdomen có giá trị lớn nhất $\rightarrow$ Loại biến này ra khỏi mô hình.
+
+```{r}
+# Xây dựng mô hình mới
+model_1 <- lm(BodyFat~ . - Abdomen,data = train.data)
+```
+
+
+```{r}
+# Tính chỉ số VIF cho mô hình mới
+vif_values_1 <- vif(model_1)
+vif_values_1
+```
+
+Chỉ số VIF của biến bmi có giá trị lớn nhất $\rightarrow$ Loại biến này ra khỏi mô hình.
+
+```{r}
+# Xây dựng mô hình mới
+model_2 <- lm(BodyFat~ . - Abdomen - bmi,data = train.data)
+```
+
+```{r}
+# Tính chỉ số VIF cho mô hình mới
+vif_values_2 <- vif(model_2)
+vif_values_2
+```
+
+Chỉ số VIF của biến Hip có giá trị lớn nhất $\rightarrow$ Loại biến này ra khỏi mô hình.
+
+```{r}
+# Xây dựng mô hình mới
+model_3 <- lm(BodyFat~ . - Abdomen - bmi - Hip,data = train.data)
+```
+
+
+
+```{r}
+# Tính chỉ số VIF cho mô hình mới
+vif_values_3 <- vif(model_3)
+vif_values_3
+```
+Chỉ VIF trên các biến ở mô hình này tương đối thấp, ta có thể sử dụng mô hình này để tiếp tục các bước tiếp theo và xem như đa cộng tuyến không tồn tại trong mô hình nữa.
+
+
+
+Với mô hình không còn hiện tượng đa cộng tuyến, ta sử dụng phương pháp step-wise để tìm ra mô hình tốt nhất.
+
+```{r}
+# Xây dựng mô hình tốt nhất với phương pháp step-backward
+model_best <- step(model_3, direction = "backward",trace = TRUE)
+summary(model_best)
+```
+
+Giả thuyết:
+
+- $H_0$: $\beta_i = 0$ với i = 0, 1, 2,...
+
+- $H_1$: $\beta_i \neq 0$
+
+
+Mô hình hồi quy được xây dựng để dự báo phần trăm lượng mỡ trong cơ thể (biến BodyFat) dựa trên tuổi tác và số đo chu vi trên các bộ phận: cổ (Neck), ngực (Chest), đùi (Thigh) và cổ tay (Wrist). Ý nghĩa của mô hình như sau:
+
+- Hệ số chặn (Intercept - $\beta_0$): biểu thị mô hình sẽ dự báo BodyFat có giá trị là -31.33 khi các biến độc lập bằng 0.
+
+- Hệ số cho biến Age: với mỗi một tuổi thì phần trăm lượng mỡ trong cơ thể tăng 0.24%, nếu các biến khác không thay đổi. Sự biến thiên này có ý nghĩa thống kê với p-value = $1.96 \times 10^{-9} << \alpha = 0.05$.
+
+- Hệ số cho biến Neck: với mỗi cen-ti-mét chu vi vòng cổ, phần trăm lượng mỡ trong cơ thể giảm 0.63%, nếu các biến khác không thay đổi. Và sự biến thiên này cũng có ý nghĩa thống kê với p-value = $0.04 < \alpha = 0.05$.
+
+- Hệ số cho biến Chest: với mỗi cen-ti-mét chu vi vòng ngực, phần trăm lượng mỡ trong cơ thể tăng 0.63%, nếu các biến khác không thay đổi. Và sự biến thiên này cũng có ý nghĩa thống kê với p-value = $1.28 \times 10^{-11} << \alpha = 0.05$.
+
+- Hệ số cho biến Thigh: với mỗi cen-ti-mét chu vi vòng đùi, phần trăm lượng mỡ trong cơ thể tăng 0.7%, nếu các biến khác không thay đổi. Và sự biến thiên này cũng có ý nghĩa thống kê với p-value = $6.01 \times 10^{-7} << \alpha = 0.05$.
+
+- Hệ số cho biến Wrist: với mỗi cen-ti-mét chu vi cổ tay, phần trăm lượng mỡ trong cơ thể giảm 2.3%, nếu các biến khác không thay đổi. Và sự biến thiên này cũng có ý nghĩa thống kê với p-value = $3.3 \times 10^{-4} << \alpha = 0.05$.
+
+Ngoài ra,
+
+- Sai số chuẩn của mô hình là 5.349, chỉ ra giá trị BodyFat được dự đoán từ mô hình có trung bình sai khác với giá trị thực là 5.349.
+
+- Giá trị $R^2$ đạt 0.6067, có nghĩa khoảng 60.67% sự biến thiên của biến BodyFat có thể được giải thích bởi mô hình này. Đây chỉ ở mức độ giải thích tương đối.
+
+- Giá trị thống kê F-value = 59.23 trên 5 và 192 bậc tự do, điều này chỉ ra rằng, tổng thể thì mô hình có ý nghĩa thống kê đồng nghĩa với việc có ít nhất một biến độc lập tương quan với BodyFat.
+
+
+# Kiểm tra các giả định
+
+```{r}
+# Kiểm tra sự tự tương quan
+set.seed(11)
+durbinWatsonTest(model_best)
+```
+
+Giả thuyết:
+
+- $H_0$: Không có sự tự tương quan
+
+- $H_1$: Có tồn tại sự tự tương quan
+
+Kiểm định Durbin - Watson cho kết quả như sau:
+
+- p-value = 0.02, với mức ý nghĩa 1% thì ta vẫn không đủ dữ kiện bác bỏ giả thuyết $H_0$. Suy ra, không có sự tự tương quan trong mô hình.
+
+```{r}
+# Kiểm tra tính chuẩn của phần dư
+par(mfrow = c(1, 1))
+qqPlot(model_best$residuals,
+       id = FALSE
+)
+
+shapiro_test(residuals(model_best))
+```
+
+Giả thuyết:
+
+- $H_0$: Phần dư tuân theo phân phối chuẩn
+
+- $H_1$: Phần dư không tuân theo phân phối chuẩn
+
+Hầu hết giá trị các phần dư của mô hình phân bố dọc theo đường thẳng hồi quy; đồng thời, kết quả kiểm định Shapiro-Wilk cho p-value = 0.83 > $\alpha$ = 0.05. Nên ta không có đủ dữ kiện để bác bỏ giả thuyết $H_0$, suy ra phần dư tuân theo phân phối chuẩn.
+
+
+
+```{r}
+# Kiểm tra tính đồng phương sai của phần dư
+plot(model_best, which = 3)
+
+
+bptest(model_best)
+```
+
+Giả thuyết:
+
+- $H_0$: Phần dư đồng phương sai
+
+- $H_1$: Phần dư có phương sai khác nhau
+
+Kết quả kiểm định Breusch-Pagan cho kết quả, p-value = 0.62 > $\alpha$ = 0.05, nên ta không đủ dữ kiện bác bỏ giả thuyết $H_0$ $\rightarrow$ Phần dư đồng phương sai.
+
+\textbf{Kết luận:} Mô hình hồi quy tuyến tính dự đoán giá trị của biến BodyFat $$\textit{BodyFat} = -31.33 + 0.24 \times \textit{Age} - 0.63 \times \textit{Neck} + 0.63 \times \textit{Chest} + 0.7 \times \textit{Thigh} - 2.3 \times \textit{Wrist}$$
+
+thỏa các giả định của mô hình, nên kết quả của mô hình là đáng tin cậy.
+
+# Dự báo
+```{r}
+# Dự báo giá trị trên tập test.data
+pred <- predict(model_best, test.data)
+pred
+```
+
+```{r}
+# Tính sai số giữa giá trị dụ báo và giá trị thực
+err <- test.data$BodyFat - pred
+err
+```
+```{r}
+# TThông số thống kê của sai số mô hình
+summary(model_best$residuals)
+# Thông số thống kê của sai số dự báo trên tập test
+summary(err)
+```
+
+Ta có thể thấy, sai số từ quá trình dự báo trên tập test có các giá trị thống kê gần với giá trị thống kê của sai số trên mô hình $\rightarrow$ Mô hình hoạt động hiệu quả và không bị overfitting với tập dữ liệu train.
+
+# Đề xuất phương pháp
+
+- Theo kết quả kiểm tra giả định của mô hình, giả định về sự tự tương quan không được đảm bảo như hai giả định phân phối chuẩn và đồng phương sai, nên mô hình trên có thể bị ảnh hưởng bởi yếu tố này. Do đó ta cần tìm phương pháp khác để loại bỏ tác động của sự tự tương quan lên mô hình. Để có thể giải quyết vấn đề trên, ta có thể sử dụng phương pháp bình phương nhỏ nhất tổng quát (Generalized least squares - GLS) để ước lượng các tham số của mô hình, bởi vì GLS biến đổi dữ liệu gốc giúp loại bỏ tương quan trong các phần dư. Sự biến đổi này khiến cho các sai số mới không có tương quan, đáp ứng các giả định cần thiết cho ước lượng một cách hiệu quả.
+
+- Mức độ giải thích của mô hình chỉ đạt mức tương đối ($R^2$) với mô hình hồi quy tuyến tính truyền thống; có thể một số mô hình học máy phức tạp sẽ giải quyết được vấn đề trên:
+
+  + Mô hình Ramdom Forest: mô hình này giúp giải thích tốt hơn các mối quan hệ phi tuyến.
+  + Gradient boosting: là một mô hình sử dụng kết hợp nhiều mô hình nhỏ để tạo thành một mô hình tổng thể với hiệu suất cao.
