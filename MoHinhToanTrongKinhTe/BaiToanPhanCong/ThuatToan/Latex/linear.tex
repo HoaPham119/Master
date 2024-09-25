@@ -1,0 +1,111 @@
+\section{Lập Trình Tuyến Tính cho bài toán phân công}
+
+Bài toán phân công (\textit{Assignment Problem}) là một dạng bài toán tối ưu hóa với mục tiêu phân công \(n\) công việc cho \(n\) người sao cho tổng chi phí là nhỏ nhất, dựa trên một ma trận chi phí \(C[i][j]\), trong đó \(C[i][j]\) là chi phí khi người \(i\) thực hiện công việc \(j\).
+
+Bài toán phân công có thể được giải quyết một cách hiệu quả bằng phương pháp Lập Trình Tuyến Tính (Linear Programming). Phương pháp này sử dụng các biến nhị phân để biểu diễn việc gán người cho công việc, với hàm mục tiêu là tối thiểu hóa tổng chi phí và các ràng buộc đảm bảo rằng mỗi người chỉ nhận một công việc và mỗi công việc chỉ được giao cho một người.
+
+\subsection{Khởi tạo bài toán Lập Trình Tuyến Tính}
+
+Bài toán được khởi tạo bằng cách sử dụng thư viện \texttt{PuLP}.
+PuLP là một thư viện Python mạnh mẽ,
+được sử dụng để mô hình hóa và giải quyết các bài toán tối ưu hóa tuyến tính
+(Linear Programming - LP) và tối ưu hóa số nguyên (Integer Programming - IP).
+PuLP cung cấp cú pháp đơn giản và rõ ràng,
+giúp người dùng dễ dàng xây dựng bài toán phân công và các bài toán lập trình tuyến tính khác.
+Một trong những ứng dụng phổ biến của PuLP là giải bài toán phân công công việc (Assignment Problem).
+Cụ thể, chúng ta khởi tạo một bài toán với mục tiêu là \textbf{tối thiểu hóa} (minimize) tổng chi phí phân công:
+
+\begin{verbatim}
+    prob = pulp.LpProblem("Assignment_Problem", pulp.LpMinimize)
+\end{verbatim}
+
+Điều này có nghĩa là chúng ta cần tìm một cách phân công công việc sao cho tổng chi phí của tất cả các nhiệm vụ được thực hiện là nhỏ nhất.
+
+\subsection{Tạo các biến nhị phân}
+
+Các biến nhị phân \(x_{ij}\) được tạo ra để biểu diễn việc gán người \(i\) cho công việc \(j\). Cụ thể:
+
+\begin{verbatim}
+    x = [[pulp.LpVariable(f"x_{i}_{j}", cat='Binary')
+        for j in range(n)] for i in range(n)]
+\end{verbatim}
+
+Trong đó:
+\begin{itemize}
+    \item \(x_{ij} = 1\) nếu người \(i\) được gán công việc \(j\), ngược lại \(x_{ij} = 0\).
+    \item Các biến này được khai báo với loại nhị phân (\texttt{cat='Binary'}), tức là chúng chỉ có thể nhận giá trị \(0\) hoặc \(1\).
+\end{itemize}
+
+\subsection{Hàm mục tiêu}
+
+Hàm mục tiêu của bài toán là \textbf{tối thiểu hóa tổng chi phí} phân công. Tổng chi phí này được tính bằng cách nhân chi phí \(C[i][j]\) của việc gán người \(i\) cho công việc \(j\) với biến quyết định nhị phân \(x_{ij}\), và sau đó tổng hợp tất cả các chi phí lại:
+
+\begin{verbatim}
+    prob += pulp.lpSum(cost_matrix[i][j] * x[i][j]
+        for i in range(n) for j in range(n)), "Total_Cost"
+\end{verbatim}
+
+Hàm mục tiêu ở đây:
+\[
+\text{Minimize } \sum_{i=1}^{n} \sum_{j=1}^{n} C[i][j] \cdot x_{ij}
+\]
+Mục tiêu là giảm tổng chi phí khi thực hiện phân công sao cho tối ưu.
+
+\subsection{Ràng buộc - Mỗi người chỉ thực hiện một công việc}
+
+Ràng buộc này đảm bảo rằng mỗi người \(i\) chỉ thực hiện đúng một công việc \(j\):
+
+\begin{verbatim}
+    for i in range(n):
+        prob += pulp.lpSum(x[i][j]
+            for j in range(n)) == 1, f"Person_{i}_assignment"
+\end{verbatim}
+
+Ràng buộc này được viết dưới dạng:
+\[
+\sum_{j=1}^{n} x_{ij} = 1 \quad \forall i = 1, 2, ..., n
+\]
+Nghĩa là, tổng các công việc mà người \(i\) có thể được gán sẽ bằng \(1\), tức là người \(i\) chỉ được gán đúng một công việc.
+
+\subsection{Ràng buộc - Mỗi công việc chỉ được thực hiện bởi một người}
+
+Ràng buộc này đảm bảo rằng mỗi công việc \(j\) chỉ được thực hiện bởi đúng một người \(i\):
+
+\begin{verbatim}
+    for j in range(n):
+        prob += pulp.lpSum(x[i][j]
+            for i in range(n)) == 1, f"Job_{j}_assignment"
+\end{verbatim}
+
+Ràng buộc này được viết dưới dạng:
+\[
+\sum_{i=1}^{n} x_{ij} = 1 \quad \forall j = 1, 2, ..., n
+\]
+Nghĩa là, mỗi công việc \(j\) chỉ có thể được giao cho đúng một người \(i\).
+
+\subsection{Giải bài toán}
+
+Sau khi thiết lập hàm mục tiêu và các ràng buộc, chúng ta gọi hàm \texttt{solve()} để giải bài toán:
+
+\begin{verbatim}
+    prob.solve()
+\end{verbatim}
+
+Kết quả giải sẽ là cách phân công tối ưu giữa người và công việc sao cho tổng chi phí là nhỏ nhất, đồng thời các ràng buộc về phân công công việc và người được thỏa mãn.
+
+\subsection{In ra kết quả}
+
+Kết quả tối ưu (tổng chi phí tối ưu và cách phân công) được in ra bằng cách duyệt qua các biến quyết định và kiểm tra giá trị của chúng. Nếu \(x_{ij} = 1\), điều đó có nghĩa là người \(i\) được gán cho công việc \(j\).
+
+\begin{verbatim}
+    for i in range(n):
+    for j in range(n):
+        if pulp.value(x[i][j]) == 1:
+            print(f"Người {i+1} thực hiện công việc {j+1} \
+                với chi phí {cost_matrix[i][j]}")
+\end{verbatim}
+
+\subsection{Code}
+\includepdf[page=-]{linear.pdf}
+
+

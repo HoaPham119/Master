@@ -1,0 +1,407 @@
+\section{Thuật toán Hungarian}
+Phương pháp Hungarian là một thuật toán tối ưu hóa tổ hợp giải quyết
+bài toán phân công công việc trong thời gian đa thức (polynomial time).
+Thuật toán này được phát triển bởi Harold Kuhn vào năm 1955
+và được đặt tên dựa trên các công trình của các nhà toán học Hungary,
+Dénes Kőnig và Jenő Egerváry.
+Vào năm 2006, người ta phát hiện rằng Carl Gustav Jacobi đã giải quyết bài toán này vào thế kỷ 19.
+James Munkres đã xác nhận thuật toán là đa thức vào năm 1957, và thuật toán còn được gọi là thuật toán Kuhn–Munkres.
+Độ phức tạp thời gian ban đầu là \( O(n^4) \), nhưng sau đó được cải thiện xuống \( O(n^3) \) bởi Edmonds, Karp và Tomizawa. Thuật toán cũng được mở rộng cho các bài toán dòng chảy tối đa dưới dạng thuật toán Ford–Fulkerson.
+\subsection{Bài toán đặt ra}
+\subsubsection{Công thức ma trận}
+
+Chúng ta sẽ xây dựng một ma trận chi phí C có kích thước \( n \times n \), trong đó phần tử tại hàng thứ \( i \) và cột thứ \( j \) đại diện cho chi phí của việc giao nhiệm vụ thứ \( j \) cho công nhân thứ \( i \). Chúng ta phải tìm một cách phân công các nhiệm vụ cho các công nhân sao cho mỗi nhiệm vụ được giao cho một công nhân và mỗi công nhân được giao một nhiệm vụ, sao cho tổng chi phí của phân công là tối thiểu.
+
+Điều này có thể được biểu diễn dưới dạng hoán vị các hàng của ma trận chi phí \( C \) để tối thiểu hóa dấu vết của một ma trận:
+
+\[
+\min_{P} \operatorname{Tr}(PC)
+\]
+
+trong đó \( P \) là một ma trận hoán vị. (Tương đương, các cột có thể được hoán vị bằng cách sử dụng \( CP \).)
+
+Nếu mục tiêu là tìm phân công cho chi phí tối đa, bài toán có thể được giải bằng cách lấy phủ định của ma trận chi phí \( C \).
+\subsubsection{Công thức đồ thị lưỡng cực}
+Thuật toán có thể được mô tả tương đương bằng cách mô hình hóa bài toán sử dụng đồ thị hai phía. Chúng ta có một đồ thị hai phía đầy đủ \( G = (S, T; E) \) với \( n \) đỉnh công nhân \( (S) \) và \( n \) đỉnh công việc \( (T) \), và các cạnh \( (E) \) mỗi cạnh có một chi phí \( c(i, j) \). Mục tiêu là tìm một phân công hoàn hảo với tổng chi phí nhỏ nhất.
+\subsection{Thuật toán}
+Chúng ta gọi một hàm \( y: (S \cup T) \to R \) là một \textit{điểm tiềm năng} nếu \( y(i) + y(j) \leq c(i, j) \) đối với mỗi \( i \in S \) và \( j \in T \). Giá trị của điểm tiềm năng \( y \) là tổng của điểm tiềm năng trên tất cả các đỉnh:
+
+\[
+\sum_{v \in S \cup T} y(v)
+\]
+Chi phí của mỗi phân phối hoàn hảo là giá trị nhỏ nhất của mỗi điểm tiềm năng: tổng chi phí của phân phối là tổng chi phí của tất cả các cạnh; chi phí của mỗi cạnh ít nhất bằng tổng các điểm tiềm năng của các đỉnh đầu mút của nó; vì phân phối là hoàn hảo, mỗi đỉnh là đầu mút của chính một cạnh; do đó, tổng chi phí ít nhất bằng tổng các điểm tiềm năng.\\
+Phương pháp Hungarian tìm một phân phối hoàn hảo và một điểm tiềm năng sao cho chi phí của phân phối bằng giá trị của điểm tiềm năng. Điều này chứng minh rằng cả hai đều là tối ưu. Thực tế, phương pháp Hungarian tìm một phân phối hoàn hảo của các cạnh chặt: một cạnh \( ij \) được gọi là chặt đối với một điểm tiềm năng \( y \) nếu \( y(i) + y(j) = c(i, j) \). Chúng ta ký hiệu đồ thị con của các cạnh chặt là \( G_y \). Chi phí của một phân phối hoàn hảo trong \( G_y \) (nếu có) bằng giá trị của \( y \).\\
+Trong thuật toán, chúng ta duy trì một điểm tiềm năng \( y \) và một định hướng của \( G_y \) (ký hiệu là \( \overrightarrow{G_y} \)) với đặc điểm là các cạnh được định hướng từ \( T \) đến \( S \) tạo thành một phân phối \( M \). Ban đầu, \( y \) là 0 ở tất cả các đỉnh, và tất cả các cạnh được định hướng từ \( S \) đến \( T \) (vì vậy \( M \) là rỗng). Trong mỗi bước, chúng ta hoặc thay đổi \( y \) sao cho giá trị của nó tăng lên, hoặc thay đổi định hướng để thu được một phân phối với nhiều cạnh hơn. Chúng ta duy trì bất invariant rằng tất cả các cạnh của \( M \) là chặt. Chúng ta kết thúc khi \( M \) là một phân phối hoàn hảo.\\
+Trong một bước tổng quát, giả sử \( R_S \subseteq S \) và \( R_T \subseteq T \) là các đỉnh không được bao phủ bởi \( M \) (vì vậy \( R_S \) bao gồm các đỉnh trong \( S \) không có cạnh vào và \( R_T \) bao gồm các đỉnh trong \( T \) không có cạnh ra). Gọi \( Z \) là tập hợp các đỉnh có thể tiếp cận được trong \( \overrightarrow{G_y} \) từ \( R_S \) qua một đường đi có hướng. Điều này có thể được tính toán bằng cách tìm kiếm theo chiều rộng (breadth-first search).
+
+Nếu \( R_T \cap Z \) không rỗng, thì hãy đảo ngược định hướng của tất cả các cạnh dọc theo một đường đi có hướng trong \( \overrightarrow{G_y} \) từ \( R_S \) đến \( R_T \). Như vậy, kích thước của phân phối tương ứng sẽ tăng thêm 1.
+Nếu \( R_T \cap Z \) là rỗng, thì hãy đặt
+
+\[
+\Delta := \min \{ c(i, j) - y(i) - y(j) : i \in Z \cap S, j \in T \setminus Z \}.
+\]
+
+\(\Delta\) được xác định rõ vì ít nhất một cạnh như vậy phải tồn tại bất cứ khi nào phân phối chưa đạt kích thước tối đa; nó là dương vì không có cạnh chặt nào giữa \( Z \cap S \) và \( T \setminus Z \). Tăng \( y \) lên \(\Delta\) trên các đỉnh của \( Z \cap S \) và giảm \( y \) đi \(\Delta\) trên các đỉnh của \( Z \cap T \). Điểm tiềm năng mới vẫn là một điểm tiềm năng, và mặc dù đồ thị \( G_y \) thay đổi, nó vẫn chứa \( M \) (xem các phần tiếp theo). Chúng ta định hướng các cạnh mới từ \( S \) đến \( T \). Theo định nghĩa của \(\Delta\), tập hợp các đỉnh \( Z \) có thể tiếp cận từ \( R_S \) sẽ tăng lên (lưu ý rằng số lượng các cạnh chặt không nhất thiết phải tăng).
+
+Chúng ta lặp lại các bước này cho đến khi \( M \) trở thành một phân phối hoàn hảo, lúc đó nó cung cấp một phân phối có chi phí tối thiểu. Thời gian thực hiện của phiên bản này của phương pháp là \( O(n^4) \): \( M \) được tăng cường \( n \) lần, và trong một giai đoạn mà \( M \) không thay đổi, có tối đa \( n \) thay đổi điểm tiềm năng (vì \( Z \) tăng lên mỗi lần). Thời gian cần thiết cho một sự thay đổi điểm tiềm năng là \( O(n^2) \).
+
+\subsubsection{Chứng Minh Việc Thuật Toán Luôn Tiến Bộ}
+
+Chúng ta phải chứng minh rằng miễn là phân phối không đạt kích thước tối đa, thuật toán luôn có thể tiến triển — tức là, hoặc tăng số lượng cạnh đã ghép, hoặc siết chặt ít nhất một cạnh. Để làm được điều này, chỉ cần chứng minh rằng ít nhất một trong các điều kiện sau đây luôn đúng tại mỗi bước:
+
+\begin{enumerate}
+    \item \( M \) là phân phối có kích thước tối đa.
+    \item Đồ thị \( G_y \) chứa một đường đi gia tăng.
+    \item Đồ thị \( G_y \) chứa một đường đi có đuôi lỏng: một đường đi từ một đỉnh trong \( R_S \) đến một đỉnh trong \( T \setminus Z \) bao gồm bất kỳ số lượng (có thể là không) các cạnh chặt theo sau bởi một cạnh lỏng. Cạnh lỏng cuối cùng của một đường đi có đuôi lỏng do đó thuộc về \( Z \cap S \), đảm bảo rằng \(\Delta\) được xác định rõ.
+\end{enumerate}
+
+Nếu \( M \) là phân phối có kích thước tối đa, chúng ta đã hoàn thành. Nếu không, theo định lý Berge, phải tồn tại một đường đi gia tăng \( P \) với đối tượng là \( M \) trong đồ thị cơ sở \( G \). Tuy nhiên, đường đi này có thể không tồn tại trong \( G_y \): mặc dù mọi cạnh có số chẵn trong \( P \) là chặt theo định nghĩa của \( M \), các cạnh có số lẻ có thể là lỏng và do đó không có trong \( G_y \). Một đầu mối của \( P \) nằm trong \( R_S \), đầu mối còn lại trong \( R_T \); không mất tính tổng quát, giả sử nó bắt đầu từ \( R_S \). Nếu mọi cạnh trên \( P \) đều chặt, thì nó vẫn là một đường đi gia tăng trong \( G_y \) và chúng ta đã hoàn thành. Nếu không, giả sử \( uv \) là cạnh lỏng đầu tiên trên \( P \). Nếu \( v \notin Z \), thì chúng ta đã tìm thấy một đường đi có đuôi lỏng và chúng ta đã hoàn thành. Ngược lại, \( v \) có thể được tiếp cận từ một đường đi khác \( Q \) của các cạnh chặt từ một đỉnh trong \( R_S \). Gọi \( P_v \) là đoạn đường đi của \( P \) bắt đầu từ \( v \) và tiếp tục đến cuối, và \( P' \) là đường đi được hình thành bằng cách di chuyển dọc theo \( Q \) cho đến khi đến một đỉnh trên \( P_v \), và sau đó tiếp tục đến cuối của \( P_v \). Quan sát rằng \( P' \) là một đường đi gia tăng trong \( G \) với ít nhất một cạnh lỏng so với \( P \). \( P \) có thể được thay thế bằng \( P' \) và quy trình lý luận này có thể được lặp lại (theo phương pháp quy nạp trên số lượng các cạnh lỏng) cho đến khi tìm được một đường đi gia tăng trong \( G_y \) hoặc một đường đi có đuôi lỏng trong \( G \).
+\subsubsection{Chứng Minh Việc Điều Chỉnh Điểm Tiềm Năng \( y \) Không Thay Đổi Phân Phối \( M \)}
+Để chứng minh rằng mỗi cạnh trong phân phối \( M \) vẫn giữ nguyên sau khi điều chỉnh điểm tiềm năng \( y \), ta cần chứng minh rằng cho một cạnh tùy ý trong \( M \), hoặc cả hai đầu của nó đều nằm trong tập hợp \( Z \), hoặc cả hai đều không nằm trong \( Z \). 
+
+\subsubsection*{Chứng Minh}
+
+Xét một cạnh \( vu \) trong \( M \) từ tập hợp \( T \) đến tập hợp \( S \). Ta có thể chứng minh như sau:
+
+\begin{itemize}
+    \item Nếu \( v \in Z \), thì \( u \) cũng phải nằm trong \( Z \), vì mọi cạnh trong \( M \) đều là chặt. Điều này dễ dàng thấy vì nếu một cạnh trong \( M \) là chặt, thì cả hai đầu của nó đều thuộc \( Z \).
+
+    \item Giả sử ngược lại, rằng \( u \in Z \) nhưng \( v \notin Z \). Khi đó, \( u \) không thể nằm trong \( R_S \) vì nó là điểm kết thúc của một cạnh đã phân phối, do đó phải có một đường đi theo hướng từ một đỉnh trong \( R_S \) đến \( u \) chỉ đi qua các cạnh chặt. Đường đi này phải tránh \( v \), vì theo giả thuyết, \( v \) không nằm trong \( Z \). 
+
+    Do đó, đỉnh ngay trước \( u \) trong đường đi này là một đỉnh khác \( v' \in T \). Cạnh \( v'u \) là một cạnh chặt từ \( T \) đến \( S \) và do đó thuộc \( M \). Nhưng điều này mâu thuẫn với việc phân phối \( M \) không thể chứa hai cạnh chung một đỉnh \( u \), vì vậy \( M \) không phải là một phân phối. 
+
+    Kết luận, mỗi cạnh trong \( M \) phải có hoặc cả hai đầu của nó nằm trong \( Z \), hoặc cả hai đầu của nó đều không nằm trong \( Z \).
+\end{itemize}
+
+\subsubsection{Chứng Minh Điểm Tiềm Năng \( y \) Vẫn Là Một Tiềm Năng}
+
+Để chứng minh rằng điểm tiềm năng \( y \) vẫn là một tiềm năng sau khi được điều chỉnh, ta cần chứng minh rằng không có cạnh nào có tổng điểm tiềm năng vượt quá chi phí của nó. 
+
+Điều này đã được thiết lập cho các cạnh trong \( M \) bởi đoạn chứng minh trước đó, vì vậy ta sẽ xét một cạnh tùy ý \( uv \) từ \( S \) đến \( T \). 
+
+\subsubsection*{Chứng Minh}
+
+Nếu điểm tiềm năng \( y(u) \) được tăng thêm \( \Delta \), ta có hai trường hợp:
+
+\begin{itemize}
+    \item Nếu \( v \in Z \cap T \), thì \( y(v) \) được giảm đi \( \Delta \), vì vậy tổng điểm tiềm năng của cạnh không thay đổi.
+    
+    \item Nếu \( v \in T \setminus Z \), theo định nghĩa của \( \Delta \), ta có:
+    \[
+    y(u) + y(v) + \Delta \leq c(u, v).
+    \]
+    Do đó, tổng điểm tiềm năng của cạnh \( uv \) vẫn không vượt quá chi phí của nó.
+\end{itemize}
+
+Như vậy, điểm tiềm năng \( y \) vẫn giữ tính chất là một tiềm năng sau khi điều chỉnh.
+
+
+\subsubsection{Độ phức tạp thời gian \( O(n^3) \)}
+
+Giả sử có \( J \) công việc và \( W \) công nhân (\( J \leq W \)). Chúng tôi mô tả cách tính toán chi phí tối ưu cho mỗi tiền tố của công việc để gán mỗi công việc trong số này cho các công nhân khác nhau. Cụ thể, ta thêm công việc thứ \( j \) và cập nhật tổng chi phí trong thời gian \( O(jW) \), dẫn đến tổng thời gian tính toán là
+\[
+O\left(\sum_{j=1}^{J} jW\right) = O(J^2 W).
+\]
+Lưu ý rằng điều này tốt hơn \( O(W^3) \) khi số lượng công việc nhỏ hơn so với số lượng công nhân.
+\section*{Thêm Công Việc Thứ \( j \) Trong Thời Gian \( O(jW) \)}
+
+Chúng ta sử dụng ký hiệu như trong phần trước, mặc dù chúng tôi sẽ điều chỉnh các định nghĩa nếu cần thiết. Gọi \( S_j \) là tập hợp các công việc đầu tiên \( j \) và \( T \) là tập hợp tất cả các công nhân.
+
+Trước bước thứ \( j \) của thuật toán, chúng ta giả sử rằng chúng ta có một phân phối trên \( S_{j-1} \cup T \) khớp tất cả các công việc trong \( S_{j-1} \) và các điểm tiềm năng \( y \) thỏa mãn điều kiện sau: phân phối là chặt chẽ đối với các điểm tiềm năng, và các điểm tiềm năng của tất cả các công nhân chưa được gán việc là bằng không, và các điểm tiềm năng của tất cả các công nhân đã được gán việc là không dương. Lưu ý rằng các điểm tiềm năng như vậy chứng minh tính tối ưu của phân phối.
+
+Trong bước thứ \( j \), chúng ta thêm công việc thứ \( j \) vào \( S_{j-1} \) để tạo thành \( S_j \) và khởi tạo \( Z = \{ j \} \). Trong mọi thời điểm, mọi đỉnh trong \( Z \) sẽ có thể tiếp cận từ công việc thứ \( j \) trong \( G_y \). Trong khi \( Z \) không chứa một công nhân chưa được gán việc, hãy định nghĩa
+\[
+\Delta := \min \{ c(j, w) - y(j) - y(w) : j \in Z \cap S_j, w \in T \setminus Z \}
+\]
+và \( w_{\text{next}} \) là bất kỳ \( w \) nào mà giá trị nhỏ nhất đạt được. Sau khi điều chỉnh các điểm tiềm năng theo cách đã mô tả trong phần trước, sẽ có một cạnh chặt chẽ từ \( Z \) đến \( w_{\text{next}} \).
+
+Nếu \( w_{\text{next}} \) chưa được gán việc, thì chúng ta có một đường đi gia tăng trong đồ thị con của các cạnh chặt chẽ từ \( j \) đến \( w_{\text{next}} \). Sau khi thay đổi phân phối dọc theo đường đi này, chúng ta đã khớp được \( j \) công việc đầu tiên và quy trình này kết thúc.
+
+Ngược lại, chúng ta thêm \( w_{\text{next}} \) và công việc được gán với nó vào \( Z \). Việc điều chỉnh các điểm tiềm năng mất thời gian \( O(W) \). Việc tính toán lại \( \Delta \) và \( w_{\text{next}} \) sau khi thay đổi các điểm tiềm năng và \( Z \) cũng có thể thực hiện trong thời gian \( O(W) \). Trường hợp 1 có thể xảy ra tối đa \( j-1 \) lần trước khi trường hợp 2 xảy ra và quy trình kết thúc, dẫn đến độ phức tạp tổng thể là \( O(jW) \).
+
+section*{Giải Thuật Hungarian và Cách Tiếp Cận Ma Trận}
+
+Phiên bản này của thuật toán theo mô hình được Flood và sau đó là Munkres mô tả chi tiết. Thuật toán chạy trong thời gian \(\mathcal{O}(n^4)\). Thay vì theo dõi các tiềm năng của các đỉnh, thuật toán hoạt động trực tiếp trên ma trận chi phí:
+
+\[
+a_{ij} := c(i,j) - y(i) - y(j)
+\]
+
+trong đó \(c(i,j)\) là ma trận chi phí gốc và \(y(i)\), \(y(j)\) là các tiềm năng từ biểu diễn đồ thị. Ban đầu, \(a_{ij} = c(i,j)\).
+
+\subsubsection*{Ví Dụ}
+
+Giả sử có \(n\) công nhân và nhiệm vụ, bài toán được đại diện bằng ma trận chi phí \(n \times n\):
+
+\[
+\begin{matrix}
+a1 & a2 & a3 & a4 \\
+b1 & b2 & b3 & b4 \\
+c1 & c2 & c3 & c4 \\
+d1 & d2 & d3 & d4
+\end{matrix}
+\]
+
+trong đó \(a, b, c,\) và \(d\) là công nhân và \(1, 2, 3, 4\) là các nhiệm vụ.
+
+\subsubsection*{Bước 1: Giảm Dòng}
+
+Trừ đi phần tử nhỏ nhất trong mỗi hàng từ tất cả các phần tử trong hàng đó. Bước này đảm bảo rằng mỗi hàng có ít nhất một số 0:
+
+\[
+a_{ij} \rightarrow a_{ij} - \text{min}(a_{i*})
+\]
+
+\[
+\begin{matrix}
+0 & a2 & a3 & a4 \\
+b1 & b2 & b3 & 0 \\
+c1 & 0 & c3 & c4 \\
+d1 & d2 & 0 & d4
+\end{matrix}
+\]
+
+\subsubsection*{Bước 2: Giảm Cột}
+
+Trừ đi phần tử nhỏ nhất trong mỗi cột từ tất cả các phần tử trong cột đó:
+
+\[
+a_{ij} \rightarrow a_{ij} - \text{min}(a_{*j})
+\]
+
+\[
+\begin{matrix}
+0 & a2 & 0 & a4 \\
+b1 & 0 & b3 & 0 \\
+0 & c2 & c3 & c4 \\
+0 & d2 & d3 & d4
+\end{matrix}
+\]
+
+\subsubsection*{Bước 3: Đánh dấu các số 0 và vẽ đường che phủ}
+
+Che tất cả các số 0 bằng số lượng dòng và cột tối thiểu. 
+
+**Các bước:**\\
+1. Cố gắng đánh dấu mỗi số 0 bằng cách đánh dấu sao * cho nó.\\
+2. Đảm bảo rằng không có hai số 0 được đánh dấu sao * nằm cùng hàng hoặc cột.
+
+**Ma Trận Ví Dụ với Các số 0 Được Đánh Dấu:**
+
+Chúng ta đánh dấu số 0 đầu tiên của Hàng 1. số 0 thứ hai của Hàng 1 không thể được đánh dấu.
+
+Chúng ta đánh dấu số 0 đầu tiên của Hàng 2. số 0 thứ hai của Hàng 2 không thể được đánh dấu.
+
+Các số 0 trên Hàng 3 và Hàng 4 không thể được đánh dấu, vì chúng nằm trên cùng một cột với số 0 đã được đánh dấu trên Hàng 1.
+
+\[
+\begin{matrix}
+0* & a2 & 0 & a4 \\
+b1 & 0* & b3 & 0 \\
+0 & c2 & c3 & c4 \\
+0 & d2 & d3 & d4
+\end{matrix}
+\]
+
+\subsubsection*{Bước 4: Điều Chỉnh Ma Trận}
+Che phủ tất cả các cột chứa số 0 (đã đánh dấu sao *) (Ở đây là 2 cột có dấu x trên đầu).
+
+\[
+\begin{array}{ccccc}
+\times & \times & & &\\
+0^* & a_2 & 0 & a_4 &\\
+b_1 & 0^* & b_3 & 0 &\\
+0 & c_2 & c_3 & c_4 &\\
+0 & d_2 & d_3 & d_4 &\\
+\end{array}
+\]
+
+Tìm một số 0 chưa được che phủ và đánh dấu nó bằng ký hiệu dấu nháy đơn. Nếu không tìm thấy số 0 nào như vậy, có nghĩa là tất cả các số 0 đã được che phủ, chuyển đến bước 5.
+
+Nếu số 0' nằm trên cùng một hàng với một số 0*, che phủ hàng tương ứng và bỏ che phủ cột của số 0*.  
+Sau đó, QUAY LẠI ``Tìm một số 0 chưa được che phủ và đánh dấu nháy cho nó: 0'.''
+
+Ở đây, số 0 thứ hai của Hàng 1 chưa được che phủ. Vì có một số 0 khác đã được đánh dấu trên Hàng 1, chúng ta che phủ Hàng 1 và bỏ che phủ Cột 1.  
+
+\[
+\begin{array}{ccccc}
+& \times & &        &  \\
+0* & a_2 & 0' & a_4 & \times\\
+b_1 & 0^* & b_3 & 0 & \\
+0 & c_2 & c_3 & c_4 & \\
+0 & d_2 & d_3 & d_4 & \\
+\end{array}
+\]
+Sau đó, số 0 thứ hai của Hàng 2 được bỏ che phủ. Chúng ta che phủ Hàng 2 và bỏ che phủ Cột 2.
+
+\[
+\begin{array}{ccccc}
+& & & &   \\
+0* & a_2 & 0' & a_4 & \times \\
+b_1 & 0^* & b_3 & 0' & \times \\
+0 & c_2 & c_3 & c_4 & \\
+0 & d_2 & d_3 & d_4 & \\
+\end{array}
+\]
+
+Những số 0 chưa được bao phủ khác và chưa được đánh dấu sao * hoặc dấu nháy '.
+Chúng ta tạo một đường đi bắt đầu từ số 0 đó bằng cách thực hiện các bước sau:
+\begin{itemize}
+    \item Bước 1: Tìm một số 0* đã được đánh dấu sao trên cột tương ứng. Nếu có, chuyển sang Bước 2, nếu không, dừng lại.
+    \item Bước 2: Tìm một số 0 đã được đánh dấu nháy ' trên hàng tương ứng(luôn luôn có một cái). Trở về Bước 1.
+\end{itemize}
+
+Số 0 ở vị trí (hàng 3, cột 1) chưa được bao phủ. Bước 1: Tìm số 0* trong cột 1 tương ứng có ở vị trí (hàng 1, cột 1),
+bước 2: Tìm một số 0' tương ứng ở hàng 1 ta thấy có số 0' ở vị trí (hàng 1, cột 3).
+
+\[
+\begin{array}{ccccc}
+0^* & a_2 & 0' & a_4 & \times \\
+b_1 & 0^* & b_3 & 0' & \times \\
+0' & c_2 & c_3 & c_4 & \\
+0 & d_2 & d_3 & d_4 & \\
+\end{array}
+\]
+
+Đối với tất cả các số 0 trong đường đi, ta sẽ thay đổi: 0' trở thành 0* và 0* trở thành 0 (bỏ đánh dấu)
+
+\[
+\begin{array}{ccccc}
+0 & a_2 & 0* & a_4 & \times \\
+b_1 & 0^* & b_3 & 0' & \times \\
+0* & c_2 & c_3 & c_4 & \\
+0 & d_2 & d_3 & d_4 & \\
+\end{array}
+\]
+Khi này số 0* ở vị trí (hàng 3, cột 1) chưa được che phủ, và rõ ràng không tồn tại số 0* ở hàng hoặc cột tương ứng đang được che phủ, do đó ta có thể che phủ cột 1.
+
+\[
+\begin{array}{ccccc}
+\times    & & & &   \\
+0 & a_2 & 0* & a_4 & \times \\
+b_1 & 0^* & b_3 & 0' & \times \\
+0* & c_2 & c_3 & c_4 & \\
+0 & d_2 & d_3 & d_4 & \\
+\end{array}
+\]
+
+Khi này tất cả các số 0 đã được che phủ, do đó ta có thể chuyển đến bước 5
+
+\subsubsection*{Bước 5: Kết Thúc}
+
+Nếu số lượng số 0 đã được đánh dấu * là $n$ (hoặc trong trường hợp tổng quát là ${\displaystyle \min(n,m)}$, trong đó $n$ là số lượng người và $m$ là số lượng công việc), thuật toán kết thúc. Xem phần \textit{Kết quả} dưới đây để biết cách diễn giải kết quả.
+
+Ngược lại, nếu số lượng các số 0 được đánh dấu * nhỏ hơn n (tổng quát là min(n,m)),
+Ta thực hiện thêm tìm giá trị chưa được bao phủ thấp nhất. Trừ giá trị này từ mọi phần tử chưa được đánh dấu và cộng thêm nó vào mọi phần tử được bao phủ bởi hai đường. Quay lại bước 4.
+
+Điều này tương đương với việc trừ một số từ tất cả các hàng không bị bao phủ và cộng thêm số đó vào tất cả các cột bị bao phủ. Những thao tác này không thay đổi các phân công tối ưu.
+
+
+\subsubsection*{Kết quả}
+
+Nếu theo phiên bản cụ thể của thuật toán này, các số 0* tạo thành bảng phân công tối ưu.
+
+\subsection*{Ví dụ cụ thể}
+Cho ma trận chi phí: công việc I, II, III, IV và các nhân viên A, B, C, D
+
+\[
+\begin{array}{ccccc}
+&I&II&II&IV\\
+NV A&18 & 52 & 30 & 39 \\
+NV B&75 & 55 & 19 & 48 \\
+NV C&35 & 57 & 8 & 65 \\
+NV D&27 & 25 & 14 & 16 \\
+\end{array}
+\]
+
+\textbf{Bước 1: Giảm Dòng}
+
+% \textbf{Giảm hàng:}
+
+Trừ giá trị nhỏ nhất trong mỗi hàng từ tất cả các phần tử trong hàng đó:
+
+\[
+\begin{array}{cccc}
+0 & 34 & 12 & 21 \\
+56 & 36 & 0 & 29 \\
+27 & 49 & 0 & 57 \\
+13 & 11 & 0 & 2 \\
+\end{array}
+\]
+
+\textbf{Bước 2: Giảm Cột}
+
+Trừ giá trị nhỏ nhất trong mỗi cột từ tất cả các phần tử trong cột đó:
+
+\[
+\begin{array}{cccc}
+0 & 23 & 12 & 19 \\
+56 & 25 & 0 & 27 \\
+27 & 38 & 0 & 55 \\
+13 & 0 & 0 & 0 \\
+\end{array}
+\]
+
+\textbf{Bước 3: Đánh dấu các số không và vẽ đường}
+
+Đánh dấu các số không trong ma trận:
+
+\[
+\begin{array}{ccccc}
+\times    & &\times & & \\
+0^* & 23 & 12 & 19 & \\
+56 & 25 & 0^* & 27 & \\
+27 & 38 & 0 & 55 & \\
+13 & 0^* & 0 & 0 & \times\\
+\end{array}
+\]
+
+\textbf{Bước 4: Điều Chỉnh Ma Trận}
+
+Tìm giá trị chưa được bao phủ thấp nhất là 0. Cập nhật ma trận (trong trường hợp này là số 19): lấy tất cả các số chưa bị gạch trừ đi số đó; các số bị gạch bởi 2 đường thẳng cộng với số đó; còn các số khác giữ nguyên.
+\[
+\begin{array}{ccccc}
+    & &\times & & \\
+0^* & 4 & 12 & 0 & \times\\
+56 & 6 & 0^* & 8 & \\
+27 & 19 & 0 & 36 & \\
+32 & 0^* & 19 & 0 & \times\\
+\end{array}
+\]
+Lặp lại: Tìm giá trị chưa được bao phủ thấp nhất là 0.
+Cập nhật ma trận (trong trường hợp này là số 6):
+lấy tất cả các số chưa bị gạch trừ đi số đó; các số bị gạch bởi 2 đường thẳng cộng với số đó;
+còn các số khác giữ nguyên.
+\[
+\begin{array}{ccccc}
+    & \times&\times & & \\
+0^* & 4 & 18 & 0 & \times\\
+50 & 0^* & 0 & 2 & \\
+21 & 13 & 0^* & 30 & \\
+32 & 0 & 25 & 0^* & \times\\
+\end{array}
+\]
+\textbf{Bước 5: Kết thúc}\\
+Khi này số lượng số 0 được đánh dấu * là 4, bằng với số công việc.
+Do đó ta bố trí theo vị trí số 0*:\\
+Nhân viên A thực hiện công việc 1 với thời gian là 18 phút;\\
+Nhân viên B thực hiện công việc 2 với thời gian là 55 phút;\\
+Nhân viên C thực hiện công việc 3 với thời gian là 8 phút;\\
+Nhân viên D thực hiện công việc 4 với thời gian là 16 phút;\\
+Tổng thời gian thực hiện công việc của cả 4 nhân viên là 97 phút.
+
+\subsection{Code}
+{\bf Ngôn ngữ: python}\\
+Python là một ngôn ngữ lập trình đa mục đích được phát triển bởi Guido van Rossum và được phát hành lần đầu tiên vào năm 1991. Nó nổi bật vì cú pháp dễ đọc, cấu trúc rõ ràng và tính linh hoạt cao.\\
+Python hỗ trợ lập trình hướng đối tượng (OOP) với các khái niệm như lớp, đối tượng, kế thừa và đa hình.
+Đa năng: Python có thể được sử dụng để phát triển nhiều loại ứng dụng, từ web và desktop đến khoa học dữ liệu và trí tuệ nhân tạo.\\
+
+{\bf Thư viện: scipy.optimize, Gói linear\_sum\_assignment}\\
+Hàm linear\_sum\_assignment trong thư viện scipy.optimize sử dụng thuật toán Hungarian (hay còn gọi là thuật toán Kuhn-Munkres) để giải quyết bài toán phân bổ tối ưu (assignment problem).\\
+
+{\bf Nhận xét kết quả phần code:}\\
+Kết quả phần code nhận được hoàn toàn giống với kết quả nhận được khi tính bằng tay cho bài toán ví dụ cụ thể đã nêu ra
+
+
+
+\includepdf[pages=-]{hungarian_code}
