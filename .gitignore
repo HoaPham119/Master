@@ -111,6 +111,7 @@ target/
 *.rtf
 *.pdf
 *.zip
+*.xls
 
 # Jupyter Notebook
 .ipynb_checkpoints
